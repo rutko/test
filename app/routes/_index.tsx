@@ -16,11 +16,12 @@ type NewCategries = InferModel<typeof categories, 'insert'>;
 export async function action({request, context}: ActionArgs) {
   const formData = await request.formData();
   const name = formData.get('name') as string;
+  const currentDate = new Date()
   const newCategries: NewCategries = {
     id: 1,
     name: name,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: currentDate,
+    updatedAt: currentDate,
   }
   const db = createClient(context.DB as D1Database);
   await db.insert(categories).values(newCategries);
