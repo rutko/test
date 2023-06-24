@@ -17,27 +17,24 @@ export async function action({request, context}: ActionArgs) {
   const formData = await request.formData();
   const name = formData.get('name') as string;
   const newCategries: NewCategries = {
+    id: 1,
     name: name,
     createdAt: new Date(),
     updatedAt: new Date(),
   }
   const db = createClient(context.DB as D1Database);
-  const ret = await db.insert(categories).values(newCategries).returning().get();
-  return {
-    id: ret.id
-  }
+  await db.insert(categories).values(newCategries);
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
-  // const hoge = await context.DB
-  // const db = createClient(context.DB as D1Database);
-  // const allCategories = await db.select().from(categories).all()
-  // if (!allCategories) {
-  //   throw new Response("Not Found", {
-  //     status: 404,
-  //   });
-  // }
-  return { categories: 'hoge' }
+  const db = createClient(context.DB as D1Database);
+  const allCategories = await db.select().from(categories).all()
+  if (!allCategories) {
+    throw new Response("Not Found", {
+      status: 404,
+    });
+  }
+  return { categories: allCategories }
 }
 
 export type Categries = InferModel<typeof categories>;
