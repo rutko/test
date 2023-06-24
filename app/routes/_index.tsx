@@ -45,7 +45,7 @@ export default function Index() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       <h1>Synca1 Admin</h1>
-      <form method="post">
+      <form>
         <fieldset>
           <legend>カテゴリーの作成</legend>
           <div>
