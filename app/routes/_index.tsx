@@ -23,7 +23,7 @@ export async function action({request, context}: ActionArgs) {
     updatedAt: currentDate,
   }
   const db = createClient(context.DB as D1Database);
-  await db.insert(categories).values(newCategries);
+  await db.insert(categories).values(newCategries).run();
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
