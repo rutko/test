@@ -1,4 +1,5 @@
 import type { V2_MetaFunction } from "@remix-run/cloudflare";
+import { redirect } from '@remix-run/cloudflare';
 import type { LoaderArgs, ActionArgs } from '@remix-run/cloudflare';
 import { useLoaderData } from "@remix-run/react";
 import type { InferModel } from 'drizzle-orm';
@@ -23,6 +24,7 @@ export async function action({request, context}: ActionArgs) {
   }
   const db = createClient(context.DB as D1Database);
   await db.insert(categories).values(newCategries).run();
+  return redirect(`/`);
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
