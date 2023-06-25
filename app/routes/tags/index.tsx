@@ -4,7 +4,7 @@ import type { LoaderArgs, ActionArgs } from '@remix-run/cloudflare';
 import { useLoaderData } from "@remix-run/react";
 import type { InferModel } from 'drizzle-orm';
 import { createClient } from "~/db/client.server"
-import { categories } from '~/db/schema';
+import { tags } from '~/db/schema';
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -13,18 +13,16 @@ export const meta: V2_MetaFunction = () => {
   ];
 };
 
-type NewCategries = InferModel<typeof categories, 'insert'>;
+type NewTags = InferModel<typeof tags, 'insert'>;
 export async function action({request, context}: ActionArgs) {
   const formData = await request.formData();
   const name = formData.get('name') as string;
-  const newCategries: NewCategries = {
+  const newTags: NewTags = {
     name: name,
-    createdAt: new Date(),
-    updatedAt: new Date(),
   }
   const db = createClient(context.DB as D1Database);
-  await db.insert(categories).values(newCategries).run();
-  return redirect(`/`);
+  await db.insert(tags).values(newTags).run();
+  return redirect(`/tags`);
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
@@ -47,9 +45,9 @@ export default function Index() {
       <h1>Synca1 Admin</h1>
       <form method="post" action="/?index">
         <fieldset>
-          <legend>カテゴリーの作成</legend>
+          <legend>タグの作成</legend>
           <div>
-            <label htmlFor="name">カテゴリー名</label>
+            <label htmlFor="name">タグ名</label>
             <input name="name" type="text" required />
           </div>
 

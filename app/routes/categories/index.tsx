@@ -24,7 +24,7 @@ export async function action({request, context}: ActionArgs) {
   }
   const db = createClient(context.DB as D1Database);
   await db.insert(categories).values(newCategries).run();
-  return redirect(`/`);
+  return redirect(`/categories`);
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
