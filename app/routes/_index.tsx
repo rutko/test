@@ -40,8 +40,8 @@ export const loader = async ({ context }: LoaderArgs) => {
 
 export type Categries = InferModel<typeof categories>;
 export default function Index() {
-  const data = useLoaderData<typeof loader>();
-  console.log(data)
+  const categories = useLoaderData<typeof loader>();
+  console.log(categories)
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       <h1>Synca1 Admin</h1>
@@ -56,6 +56,13 @@ export default function Index() {
           <button type="submit">作成</button>
         </fieldset>
       </form>
+      <ul>
+        {categories.map((c) => (
+          <li key={c.id}>
+            <a href={`/categories/${c.id}`}>{c.name}</a>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
