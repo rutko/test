@@ -27,16 +27,16 @@ export async function action({request, context}: ActionArgs) {
 
 export const loader = async ({ context }: LoaderArgs) => {
   const db = createClient(context.DB as D1Database);
-  const allCategories = await db.select().from(categories).all()
-  if (!allCategories) {
+  const allTags = await db.select().from(tags).all()
+  if (!allTags) {
     throw new Response("Not Found", {
       status: 404,
     });
   }
-  return { categories: allCategories }
+  return { tags: allTags }
 }
 
-export type Categries = InferModel<typeof categories>;
+export type Categries = InferModel<typeof tags>;
 export default function Index() {
   const data = useLoaderData<typeof loader>();
   console.log(data)
@@ -54,6 +54,17 @@ export default function Index() {
           <button type="submit">作成</button>
         </fieldset>
       </form>
+      {data.tags.length ? (
+         <ul>
+           {data.tags.map((t) => (
+             <li key={t.id}>
+               <a href={`/tags/${t.id}`}>{t.name}</a>
+             </li>
+           ))}
+         </ul>
+       ) : (
+         <p>タグはまだ作成されていません</p>
+       )}
     </div>
   );
 }
