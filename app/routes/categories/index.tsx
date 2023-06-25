@@ -56,6 +56,17 @@ export default function Index() {
           <button type="submit">作成</button>
         </fieldset>
       </form>
+      {data.categories.length ? (
+         <ul>
+           {data.categories.map((c) => (
+             <li key={c.id}>
+               <a href={`/categories/${c.id}`}>{c.name}</a>
+             </li>
+           ))}
+         </ul>
+       ) : (
+         <p>カテゴリーはまだ作成されていません</p>
+       )}
     </div>
   );
 }
