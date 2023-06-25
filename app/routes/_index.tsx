@@ -13,19 +13,19 @@ export const meta: V2_MetaFunction = () => {
   ];
 };
 
-type NewCategries = InferModel<typeof categories, 'insert'>;
-export async function action({request, context}: ActionArgs) {
-  const formData = await request.formData();
-  const name = formData.get('name') as string;
-  const newCategries: NewCategries = {
-    name: name,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  }
-  const db = createClient(context.DB as D1Database);
-  await db.insert(categories).values(newCategries).run();
-  return redirect(`/`);
-}
+// type NewCategries = InferModel<typeof categories, 'insert'>;
+// export async function action({request, context}: ActionArgs) {
+//   const formData = await request.formData();
+//   const name = formData.get('name') as string;
+//   const newCategries: NewCategries = {
+//     name: name,
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//   }
+//   const db = createClient(context.DB as D1Database);
+//   await db.insert(categories).values(newCategries).run();
+//   return redirect(`/`);
+// }
 
 export const loader = async ({ context }: LoaderArgs) => {
   const db = createClient(context.DB as D1Database);
@@ -45,6 +45,14 @@ export default function Index() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       <h1>Synca1 Admin</h1>
+      <ul>
+        <li>
+          <a href="/categories">カテゴリー追加</a>
+        </li>
+        <li>
+          <a href="/categories">タグ追加</a>
+        </li>
+      </ul>
       <form method="post" action="/?index">
         <fieldset>
           <legend>カテゴリーの作成</legend>

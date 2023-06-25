@@ -43,7 +43,7 @@ export default function Index() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       <h1>Synca1 Admin</h1>
-      <form method="post" action="/?index">
+      <form method="post" action="/tags">
         <fieldset>
           <legend>タグの作成</legend>
           <div>
