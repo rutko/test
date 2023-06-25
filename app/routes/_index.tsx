@@ -16,9 +16,8 @@ type NewCategries = InferModel<typeof categories, 'insert'>;
 export async function action({request, context}: ActionArgs) {
   const formData = await request.formData();
   const name = formData.get('name') as string;
-  const currentDate = new Date()
+  const currentDate = new Date().getTime()
   const newCategries: NewCategries = {
-    id: 1,
     name: name,
     createdAt: currentDate,
     updatedAt: currentDate,
@@ -45,7 +44,7 @@ export default function Index() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       <h1>Synca1 Admin</h1>
-      <form>
+      <form method="post">
         <fieldset>
           <legend>カテゴリーの作成</legend>
           <div>
