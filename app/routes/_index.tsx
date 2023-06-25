@@ -47,18 +47,25 @@ export default function Index() {
       <h1>Synca1 Admin</h1>
       <ul>
         <li>
-          <a href="/categories">カテゴリー追加</a>
+          <a href="/categories">カテゴリー</a>
         </li>
         <li>
-          <a href="/categories">タグ追加</a>
+          <a href="/categories">タグ</a>
         </li>
       </ul>
-      <form method="post" action="/?index">
+      <form method="post" action="/?index" encType="multipart/form-data">
         <fieldset>
-          <legend>カテゴリーの作成</legend>
+          <legend>画像のアップロード</legend>
           <div>
-            <label htmlFor="name">カテゴリー名</label>
-            <input name="name" type="text" required />
+            <label htmlFor="name">画像のタイトル</label>
+            <input name="name" type="text" />
+            <input name="file" type="file" required />
+            <label htmlFor="categoryId">カテゴリー</label>
+            <select name="categoryId">
+              <option value="1">イベント</option>
+              <option value="2">日常・生活</option>
+              <option value="3">人物</option>
+            </select>
           </div>
 
           <button type="submit">作成</button>
