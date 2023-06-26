@@ -29,7 +29,7 @@ export const meta: V2_MetaFunction = () => {
 export const loader = async ({ params, context }: LoaderArgs) => {
   const db = createClient(context.DB as D1Database);
   const tagId = params.slug
-  const tag = await db.select().from(tags).where(eq(tags.id, 1));
+  const tag = await db.select().from(tags)
   if (!tag) {
     throw new Response("Not Found", {
       status: 404,
