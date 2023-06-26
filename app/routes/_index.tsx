@@ -58,8 +58,12 @@ export default function Index() {
           <legend>画像のアップロード</legend>
           <div>
             <label htmlFor="name">画像のタイトル</label>
+          </div>
+          <div>
             <input name="name" type="text" />
             <input name="file" type="file" required />
+          </div>
+          <div>
             <label htmlFor="categoryId">カテゴリー</label>
             <select name="categoryId">
               {data.categories.map((t)=> (
