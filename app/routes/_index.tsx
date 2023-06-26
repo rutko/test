@@ -62,9 +62,9 @@ export default function Index() {
             <input name="file" type="file" required />
             <label htmlFor="categoryId">カテゴリー</label>
             <select name="categoryId">
-              <option value="1">イベント</option>
-              <option value="2">日常・生活</option>
-              <option value="3">人物</option>
+              {data.categories.map((t)=> (
+                <option key={t.id} value={t.id}>{t.name}</option>
+              ))}
             </select>
           </div>
 
