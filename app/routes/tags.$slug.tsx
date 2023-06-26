@@ -46,7 +46,7 @@ export default function TagSlug() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       <h1>{ tagName }</h1>
-      <form method="post" action="/?index">
+      <form method="patch" action="/?index">
         <fieldset>
           <legend>{ tagName }の編集</legend>
           <div>
