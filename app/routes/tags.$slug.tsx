@@ -29,7 +29,7 @@ export const meta: V2_MetaFunction = () => {
 export const loader = async ({ params, context }: LoaderArgs) => {
   const db = createClient(context.DB as D1Database);
   const tagId = params.slug
-  const tag = await db.select().from(tags).where(eq(tags.id, )).all()
+  const tag = await db.select().from(tags).where(eq(tags.id, tagId)).all()
   if (!tag) {
     throw new Response("Not Found", {
       status: 404,
@@ -38,13 +38,24 @@ export const loader = async ({ params, context }: LoaderArgs) => {
   return { tag: tag }
 }
 
-export type Categries = InferModel<typeof tags>;
 export default function TagSlug() {
   const data = useLoaderData<typeof loader>();
+  const tagName = data.tag[0]?.name
   console.log(data)
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>{data.tag[0].name}</h1>
+      <h1>{ tagName }</h1>
+      <form method="post" action="/?index">
+        <fieldset>
+          <legend>{ tagName }の編集</legend>
+          <div>
+            <label htmlFor="name">タグ名</label>
+            <input name="name" type="text" value={tagName} required />
+          </div>
+
+          <button type="submit">更新</button>
+        </fieldset>
+      </form>
     </div>
   );
 }
