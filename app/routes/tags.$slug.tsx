@@ -29,13 +29,13 @@ export const meta: V2_MetaFunction = () => {
 export const loader = async ({ params, context }: LoaderArgs) => {
   const db = createClient(context.DB as D1Database);
   const tagId = params.slug
-  // const tag = await db.select().from(tags).where(eq(tags.id, tagId))
-  // if (!tag) {
-  //   throw new Response("Not Found", {
-  //     status: 404,
-  //   });
-  // }
-  return { tag: tagId }
+  const tag = await db.select().from(tags).where(eq(tags.id, tagId))
+  if (!tag) {
+    throw new Response("Not Found", {
+      status: 404,
+    });
+  }
+  return { tag: tag }
 }
 
 export type Categries = InferModel<typeof tags>;
