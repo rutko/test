@@ -50,7 +50,7 @@ export default function Index() {
           <a href="/categories">カテゴリー</a>
         </li>
         <li>
-          <a href="/categories">タグ</a>
+          <a href="/tags">タグ</a>
         </li>
       </ul>
       <form method="post" action="/?index" encType="multipart/form-data">
