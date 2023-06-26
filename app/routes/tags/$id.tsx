@@ -29,13 +29,13 @@ export async function action({request, context}: ActionArgs) {
 export const loader = async ({ params, context }: LoaderArgs) => {
   const db = createClient(context.DB as D1Database);
   const tagId = params.id
-  const tag = await db.select().from(tags).where(eq(tags.id, tagId))
-  if (!tag) {
-    throw new Response("Not Found", {
-      status: 404,
-    });
-  }
-  return { tag }
+  // const tag = await db.select().from(tags).where(eq(tags.id, tagId))
+  // if (!tag) {
+  //   throw new Response("Not Found", {
+  //     status: 404,
+  //   });
+  // }
+  return { tag: 'tag' }
 }
 
 export type Categries = InferModel<typeof tags>;
