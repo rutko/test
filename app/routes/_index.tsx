@@ -4,7 +4,7 @@ import type { LoaderArgs, ActionArgs } from '@remix-run/cloudflare';
 import { useLoaderData } from "@remix-run/react";
 import type { InferModel } from 'drizzle-orm';
 import { createClient } from "~/db/client.server"
-import { categories } from '~/db/schema';
+import { categories, tags } from '~/db/schema';
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -30,12 +30,13 @@ export const meta: V2_MetaFunction = () => {
 export const loader = async ({ context }: LoaderArgs) => {
   const db = createClient(context.DB as D1Database);
   const allCategories = await db.select().from(categories).all()
-  if (!allCategories) {
+  const allTags = await db.select().from(tags).all()
+  if (!allCategories && !allTags) {
     throw new Response("Not Found", {
       status: 404,
     });
   }
-  return { categories: allCategories }
+  return { categories: allCategories, tags: allTags }
 }
 
 export type Categries = InferModel<typeof categories>;
@@ -58,15 +59,23 @@ export default function Index() {
           <legend>画像のアップロード</legend>
           <div>
             <label htmlFor="name">画像のタイトル</label>
+            <input name="name" type="text" />
           </div>
           <div>
-            <input name="name" type="text" />
             <input name="file" type="file" required />
           </div>
           <div>
-            <label htmlFor="categoryId">カテゴリー</label>
+            <label htmlFor="categoryId">カテゴリー選択（必須）</label>
             <select name="categoryId">
-              {data.categories.map((t)=> (
+              {data.categories.map((c)=> (
+                <option key={c.id} value={c.id}>{c.name}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="tagId">タグ選択（複数可）</label>
+            <select multiple name="tags">
+              {data.tags.map((t)=> (
                 <option key={t.id} value={t.id}>{t.name}</option>
               ))}
             </select>
