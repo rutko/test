@@ -44,7 +44,7 @@ export default function TagSlug() {
   console.log(data)
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>タグ詳細</h1>
+      <h1>{data.tag[0].name}</h1>
     </div>
   );
 }
