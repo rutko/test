@@ -51,7 +51,7 @@ export default function TagSlug() {
           <legend>{ tagName }の編集</legend>
           <div>
             <label htmlFor="name">タグ名</label>
-            <input name="name" type="text" value={tagName} required />
+            <input name="name" type="text" required />
           </div>
 
           <button type="submit">更新</button>
