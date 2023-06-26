@@ -19,10 +19,9 @@ export async function action({ params, request, context }: ActionArgs) {
   const categoryId = params.slug
   const formData = await request.formData();
   const name = formData.get('name') as string;
-  const createdAt = formData.get('createdAt') as unknown;
   const newCategory: NewTags = {
     name: name,
-    createdAt: createdAt,
+    createdAt: new Date(),
     updatedAt: new Date(),
   }
   const db = createClient(context.DB as D1Database);
@@ -55,7 +54,6 @@ export default function CategorySlug() {
         <div>
           <label htmlFor="name">カテゴリー名</label>
           <input name="name" type="text" required />
-          <input name="createdAt" type="time" value={data.category[0].createdAt} readOnly />
         </div>
 
         <button type="submit">更新</button>
