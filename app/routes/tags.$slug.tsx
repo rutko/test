@@ -28,7 +28,7 @@ export const meta: V2_MetaFunction = () => {
 
 export const loader = async ({ params, context }: LoaderArgs) => {
   const db = createClient(context.DB as D1Database);
-  const tagId = params.id
+  const tagId = params.slug
   // const tag = await db.select().from(tags).where(eq(tags.id, tagId))
   // if (!tag) {
   //   throw new Response("Not Found", {
@@ -39,7 +39,7 @@ export const loader = async ({ params, context }: LoaderArgs) => {
 }
 
 export type Categries = InferModel<typeof tags>;
-export default function TagPages() {
+export default function TagSlug() {
   const data = useLoaderData<typeof loader>();
   console.log(data)
   return (
