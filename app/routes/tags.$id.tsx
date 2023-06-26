@@ -14,17 +14,17 @@ export const meta: V2_MetaFunction = () => {
   ];
 };
 
-type NewTags = InferModel<typeof tags, 'insert'>;
-export async function action({request, context}: ActionArgs) {
-  const formData = await request.formData();
-  const name = formData.get('name') as string;
-  const newTags: NewTags = {
-    name: name,
-  }
-  const db = createClient(context.DB as D1Database);
-  await db.insert(tags).values(newTags).run();
-  return redirect(`/tags`);
-}
+// type NewTags = InferModel<typeof tags, 'insert'>;
+// export async function action({ request, context }: ActionArgs) {
+//   const formData = await request.formData();
+//   const name = formData.get('name') as string;
+//   const newTags: NewTags = {
+//     name: name,
+//   }
+//   const db = createClient(context.DB as D1Database);
+//   await db.insert(tags).values(newTags).run();
+//   return redirect(`/tags`);
+// }
 
 export const loader = async ({ params, context }: LoaderArgs) => {
   const db = createClient(context.DB as D1Database);
@@ -35,16 +35,16 @@ export const loader = async ({ params, context }: LoaderArgs) => {
   //     status: 404,
   //   });
   // }
-  return { tag: 'tag' }
+  return { tag: tagId }
 }
 
 export type Categries = InferModel<typeof tags>;
-export default function Index() {
+export default function TagPages() {
   const data = useLoaderData<typeof loader>();
   console.log(data)
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      {/* <h1>{ data }</h1> */}
+      <h1>タグ詳細</h1>
     </div>
   );
 }
