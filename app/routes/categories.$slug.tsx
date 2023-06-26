@@ -4,7 +4,7 @@ import type { LoaderArgs, ActionArgs } from '@remix-run/cloudflare';
 import { useLoaderData } from "@remix-run/react";
 import type { InferModel } from 'drizzle-orm';
 import { createClient } from "~/db/client.server"
-import { tags } from '~/db/schema';
+import { categories } from '~/db/schema';
 import { eq } from "drizzle-orm";
 
 export const meta: V2_MetaFunction = () => {
@@ -29,22 +29,22 @@ export const meta: V2_MetaFunction = () => {
 export const loader = async ({ params, context }: LoaderArgs) => {
   const db = createClient(context.DB as D1Database);
   const tagId = params.slug
-  const tag = await db.select().from(tags).where(eq(tags.id, )).all()
-  if (!tag) {
+  const category = await db.select().from(categories).where(eq(categories.id, tagId)).all()
+  if (!category) {
     throw new Response("Not Found", {
       status: 404,
     });
   }
-  return { tag: tag }
+  return { category: category }
 }
 
-export type Categries = InferModel<typeof tags>;
-export default function TagSlug() {
+export type Categries = InferModel<typeof categories>;
+export default function CategorySlug() {
   const data = useLoaderData<typeof loader>();
   console.log(data)
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>{data.tag[0].name}</h1>
+      <h1>{data.category[0].name}</h1>
     </div>
   );
 }

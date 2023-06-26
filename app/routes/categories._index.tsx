@@ -38,8 +38,7 @@ export const loader = async ({ context }: LoaderArgs) => {
   return { categories: allCategories }
 }
 
-export type Categries = InferModel<typeof categories>;
-export default function Index() {
+export default function Categries() {
   const data = useLoaderData<typeof loader>();
   console.log(data)
   return (
