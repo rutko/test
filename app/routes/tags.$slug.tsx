@@ -14,17 +14,18 @@ export const meta: V2_MetaFunction = () => {
   ];
 };
 
-// type NewTags = InferModel<typeof tags, 'insert'>;
-// export async function action({ request, context }: ActionArgs) {
-//   const formData = await request.formData();
-//   const name = formData.get('name') as string;
-//   const newTags: NewTags = {
-//     name: name,
-//   }
-//   const db = createClient(context.DB as D1Database);
-//   await db.insert(tags).values(newTags).run();
-//   return redirect(`/tags`);
-// }
+type NewTags = InferModel<typeof tags, 'insert'>;
+export async function action({ params, request, context }: ActionArgs) {
+  const tagId = params.slug
+  const formData = await request.formData();
+  const name = formData.get('name') as string;
+  const newTags: NewTags = {
+    name: name,
+  }
+  const db = createClient(context.DB as D1Database);
+  await db.update(tags).set(newTags).where(eq(tags.id, tagId)).run();
+  return redirect(`/tags/${tagId}`);
+}
 
 export const loader = async ({ params, context }: LoaderArgs) => {
   const db = createClient(context.DB as D1Database);
