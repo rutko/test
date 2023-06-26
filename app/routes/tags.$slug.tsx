@@ -19,11 +19,11 @@ export async function action({ params, request, context }: ActionArgs) {
   const tagId = params.slug
   const formData = await request.formData();
   const name = formData.get('name') as string;
-  const newTags: NewTags = {
+  const newTag: NewTags = {
     name: name,
   }
   const db = createClient(context.DB as D1Database);
-  await db.update(tags).set(newTags).where(eq(tags.id, tagId)).run();
+  await db.update(tags).set(newTag).where(eq(tags.id, tagId)).run();
   return redirect(`/tags/${tagId}`);
 }
 
@@ -41,7 +41,7 @@ export const loader = async ({ params, context }: LoaderArgs) => {
 
 export default function TagSlug() {
   const data = useLoaderData<typeof loader>();
-  const tagName = data.tag[0]?.name
+  const tagName = data.tag[0].name
   console.log(data)
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
