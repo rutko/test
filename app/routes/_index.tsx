@@ -37,8 +37,9 @@ export async function action({request, context}: ActionArgs) {
       contentType: file.type,
     },
   });
-  debugger
 
+
+  console.log(response)
   const formData = await request.formData();
   const name = formData.get('name') as string;
   const category = formData.get('category') as unknown as number;
@@ -94,7 +95,7 @@ export default function Index() {
           <a href="/tags">タグ</a>
         </li>
       </ul>
-      <form method="post" action="/?index" encType="multipart/form-data">
+      <form method="post" action="/images" encType="multipart/form-data">
         <fieldset>
           <legend>画像のアップロード</legend>
           <div>
