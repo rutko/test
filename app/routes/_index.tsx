@@ -37,12 +37,13 @@ export async function action({request, context}: ActionArgs) {
       contentType: file.type,
     },
   });
+  debugger
 
   const formData = await request.formData();
   const name = formData.get('name') as string;
   const category = formData.get('category') as unknown as number;
   const newImage: NewImage = {
-    key: 'hoge',
+    key: response.key,
     name: name,
     categoryId: category,
     createdAt: new Date(),
