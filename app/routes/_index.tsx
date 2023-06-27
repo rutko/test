@@ -38,7 +38,7 @@ export async function action({request, context}: ActionArgs) {
     },
   });
 
-  console.log()
+  console.log(response)
 
   const formData = await request.formData();
   const name = formData.get('name') as string;
