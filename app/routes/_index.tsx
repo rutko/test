@@ -42,9 +42,9 @@ export async function action({request, context}: ActionArgs) {
   const name = formData.get('name') as string;
   const category = formData.get('category') as unknown as number;
   const newImage: NewImage = {
-    key: response.key,
+    key: 'hoge',
     name: name,
-    categoryId: 1,
+    categoryId: category,
     createdAt: new Date(),
     updatedAt: new Date(),
   }
