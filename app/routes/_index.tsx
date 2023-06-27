@@ -38,6 +38,8 @@ export async function action({request, context}: ActionArgs) {
     },
   });
 
+  console.log()
+
   const formData = await request.formData();
   const name = formData.get('name') as string;
   const category = formData.get('category');
