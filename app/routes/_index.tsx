@@ -15,7 +15,7 @@ export const meta: V2_MetaFunction = () => {
   ];
 };
 
-type NewImage = InferModel<typeof categories, 'insert'>;
+type NewImage = InferModel<typeof images, 'insert'>;
 type NewimagesToTags = InferModel<typeof imagesToTags, 'insert'>;
 export async function action({request, context}: ActionArgs) {
 
@@ -38,31 +38,29 @@ export async function action({request, context}: ActionArgs) {
     },
   });
 
-  console.log(response)
+  const formData = await request.formData();
+  const name = formData.get('name') as string;
+  const category = formData.get('category') as unknown as number;
+  const newImage: NewImage = {
+    key: response.key,
+    name: name,
+    categoryId: category,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }
 
-  // const formData = await request.formData();
-  // const name = formData.get('name') as string;
-  // const category = formData.get('category');
-  // const newImage: NewImage = {
-  //   key: response.key,
-  //   name: name,
-  //   categoryId: category,
-  //   createdAt: new Date(),
-  //   updatedAt: new Date(),
-  // }
-
-  // const db = createClient(context.DB as D1Database);
-  // const imageResponse = await db.insert(images).values(newImage).run();
-  // const tags = formData.get('tags');
-  // const imageId = imageResponse.id
+  const db = createClient(context.DB as D1Database);
+  const imageResponse = await db.insert(images).values(newImage).run();
+  const tags = formData.get('tags');
+  const imageId = imageResponse.id
 
 
-  // const newimagesToTags: NewimagesToTags = {
-  //   imageId: imageId,
-  //   tagId: tags,
-  // }
+  const newimagesToTags: NewimagesToTags = {
+    imageId: imageId,
+    tagId: tags,
+  }
 
-  // await db.insert(imagesToTags).values(newimagesToTags).run();  
+  await db.insert(imagesToTags).values(newimagesToTags).run();  
 
 
   return redirect(`/`);
