@@ -50,17 +50,17 @@ export async function action({request, context}: ActionArgs) {
   }
 
   const db = createClient(context.DB as D1Database);
-  const imageResponse = await db.insert(images).values(newImage).run();
-  const tags = formData.get('tags');
-  const imageId = imageResponse.id
+  await db.insert(images).values(newImage).run();
+  // const tags = formData.get('tags');
+  // const imageId = imageResponse.id
 
 
-  const newimagesToTags: NewimagesToTags = {
-    imageId: imageId,
-    tagId: tags,
-  }
+  // const newimagesToTags: NewimagesToTags = {
+  //   imageId: imageId,
+  //   tagId: tags,
+  // }
 
-  await db.insert(imagesToTags).values(newimagesToTags).run();  
+  // await db.insert(imagesToTags).values(newimagesToTags).run();  
 
 
   return redirect(`/`);
