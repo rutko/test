@@ -40,7 +40,7 @@ export async function action({request, context}: ActionArgs) {
 
   const formData = await request.formData();
   const name = formData.get('name') as string;
-  const categoryId = formData.get('category') as unknown as number;
+  const categoryId = formData.get('categoryId');
   const newImage: newImages = {
     key: response.key,
     createdAt: new Date(),
@@ -51,7 +51,7 @@ export async function action({request, context}: ActionArgs) {
 
   const db = createClient(context.DB as D1Database);
   const imageResponse = await db.insert(images).values(newImage).run();
-  const tags = formData.get('tags');
+  const tags = formData.get('tagId');
   const imageId = imageResponse.id
 
 
@@ -106,7 +106,7 @@ export default function Index() {
           </div>
           <div>
             <label htmlFor="categoryId">カテゴリー選択（必須）</label>
-            <select name="category">
+            <select name="categoryId">
               {data.categories.map((c)=> (
                 <option key={c.id} value={c.id}>{c.name}</option>
               ))}
@@ -114,7 +114,7 @@ export default function Index() {
           </div>
           <div>
             <label htmlFor="tagId">タグ選択（複数可）</label>
-            <select multiple name="tags">
+            <select multiple name="tagId">
               {data.tags.map((t)=> (
                 <option key={t.id} value={t.id}>{t.name}</option>
               ))}
