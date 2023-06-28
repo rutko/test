@@ -15,64 +15,52 @@ export const meta: V2_MetaFunction = () => {
   ];
 };
 
-type NewImage = InferModel<typeof images, 'insert'>;
-type NewimagesToTags = InferModel<typeof imagesToTags, 'insert'>;
-type NewCategories = InferModel<typeof categories, 'insert'>;
+type newImages = InferModel<typeof images, 'insert'>;
+type newImagesToTags = InferModel<typeof imagesToTags, 'insert'>;
 export async function action({request, context}: ActionArgs) {
 
-  // const uploadHandler = unstable_createMemoryUploadHandler({
-  //   maxPartSize: 1024 * 1024 * 10,
-  // });
+  const uploadHandler = unstable_createMemoryUploadHandler({
+    maxPartSize: 1024 * 1024 * 10,
+  });
 
-  // const form = await unstable_parseMultipartFormData(request, uploadHandler);
+  const form = await unstable_parseMultipartFormData(request, uploadHandler);
 
-  // const file = form.get('file') as Blob;
-  // invariant(file, 'File is required');
+  const file = form.get('file') as Blob;
+  invariant(file, 'File is required');
 
-  // const fileName = `${uuid()}.${file.type.split('/')[1]}`;
+  const fileName = `${uuid()}.${file.type.split('/')[1]}`;
 
-  // const bucket = (context.MY_BUCKET as R2Bucket);
-  // // R2バケットにアップロードする
-  // const response = await bucket.put(fileName, await file.arrayBuffer(), {
-  //   httpMetadata: {
-  //     contentType: file.type,
-  //   },
-  // });
+  const bucket = (context.MY_BUCKET as R2Bucket);
+  // R2バケットにアップロードする
+  const response = await bucket.put(fileName, await file.arrayBuffer(), {
+    httpMetadata: {
+      contentType: file.type,
+    },
+  });
 
-
-  console.log(response)
   const formData = await request.formData();
   const name = formData.get('name') as string;
-  const category = formData.get('category') as unknown as number;
-  const newImage: NewImage = {
+  const categoryId = formData.get('category') as unknown as number;
+  const newImage: newImages = {
     key: response.key,
-    name: name,
-    categoryId: category,
     createdAt: new Date(),
     updatedAt: new Date(),
-  }
-
-  const newCategries: NewCategories = {
     name: name,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    categoryId: categoryId,
   }
 
   const db = createClient(context.DB as D1Database);
-  await db.insert(categories).values(newCategries).run();
-
-  // const db = createClient(context.DB as D1Database);
-  // const imageResponse = await db.insert(images).values(newImage).run();
-  // const tags = formData.get('tags');
-  // const imageId = imageResponse.id
+  const imageResponse = await db.insert(images).values(newImage).run();
+  const tags = formData.get('tags');
+  const imageId = imageResponse.id
 
 
-  // const newimagesToTags: NewimagesToTags = {
-  //   imageId: imageId,
-  //   tagId: tags,
-  // }
+  const newimagesToTags: newImagesToTags = {
+    imageId: imageId,
+    tagId: tags,
+  }
 
-  // await db.insert(imagesToTags).values(newimagesToTags).run();  
+  await db.insert(imagesToTags).values(newimagesToTags).run();  
 
 
   return redirect(`/images`);
@@ -82,12 +70,13 @@ export const loader = async ({ context }: LoaderArgs) => {
   const db = createClient(context.DB as D1Database);
   const allCategories = await db.select().from(categories).all()
   const allTags = await db.select().from(tags).all()
-  if (!allCategories && !allTags) {
+  const allImages = await db.select().from(images).all()
+  if (!allCategories && !allTags && !allImages) {
     throw new Response("Not Found", {
       status: 404,
     });
   }
-  return { categories: allCategories, tags: allTags }
+  return { categories: allCategories, tags: allTags, images: allImages }
 }
 
 export type Categries = InferModel<typeof categories>;
@@ -112,7 +101,7 @@ export default function Index() {
             <label htmlFor="name">画像のタイトル</label>
             <input name="name" type="text" />
           </div>
-          {/* <div>
+          <div>
             <input name="file" type="file" required />
           </div>
           <div>
@@ -130,7 +119,7 @@ export default function Index() {
                 <option key={t.id} value={t.id}>{t.name}</option>
               ))}
             </select>
-          </div> */}
+          </div>
 
           <button type="submit">作成</button>
         </fieldset>
