@@ -20,24 +20,24 @@ type NewimagesToTags = InferModel<typeof imagesToTags, 'insert'>;
 type NewCategories = InferModel<typeof categories, 'insert'>;
 export async function action({request, context}: ActionArgs) {
 
-  const uploadHandler = unstable_createMemoryUploadHandler({
-    maxPartSize: 1024 * 1024 * 10,
-  });
+  // const uploadHandler = unstable_createMemoryUploadHandler({
+  //   maxPartSize: 1024 * 1024 * 10,
+  // });
 
-  const form = await unstable_parseMultipartFormData(request, uploadHandler);
+  // const form = await unstable_parseMultipartFormData(request, uploadHandler);
 
-  const file = form.get('file') as Blob;
-  invariant(file, 'File is required');
+  // const file = form.get('file') as Blob;
+  // invariant(file, 'File is required');
 
-  const fileName = `${uuid()}.${file.type.split('/')[1]}`;
+  // const fileName = `${uuid()}.${file.type.split('/')[1]}`;
 
-  const bucket = (context.MY_BUCKET as R2Bucket);
-  // R2バケットにアップロードする
-  const response = await bucket.put(fileName, await file.arrayBuffer(), {
-    httpMetadata: {
-      contentType: file.type,
-    },
-  });
+  // const bucket = (context.MY_BUCKET as R2Bucket);
+  // // R2バケットにアップロードする
+  // const response = await bucket.put(fileName, await file.arrayBuffer(), {
+  //   httpMetadata: {
+  //     contentType: file.type,
+  //   },
+  // });
 
 
   console.log(response)
@@ -112,7 +112,7 @@ export default function Index() {
             <label htmlFor="name">画像のタイトル</label>
             <input name="name" type="text" />
           </div>
-          <div>
+          {/* <div>
             <input name="file" type="file" required />
           </div>
           <div>
@@ -130,7 +130,7 @@ export default function Index() {
                 <option key={t.id} value={t.id}>{t.name}</option>
               ))}
             </select>
-          </div>
+          </div> */}
 
           <button type="submit">作成</button>
         </fieldset>
