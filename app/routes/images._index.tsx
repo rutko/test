@@ -80,7 +80,7 @@ export const loader = async ({ context }: LoaderArgs) => {
 }
 
 export type Categries = InferModel<typeof categories>;
-export default function Index() {
+export default function Images() {
   const data = useLoaderData<typeof loader>();
   console.log(data)
   return (
@@ -94,7 +94,7 @@ export default function Index() {
           <a href="/tags">タグ</a>
         </li>
       </ul>
-      <form method="post" encType="multipart/form-data">
+      <form method="post" action="/images" encType="multipart/form-data">
         <fieldset>
           <legend>画像のアップロード</legend>
           <div>
