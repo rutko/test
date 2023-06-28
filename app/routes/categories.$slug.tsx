@@ -14,12 +14,12 @@ export const meta: V2_MetaFunction = () => {
   ];
 };
 
-type NewTags = InferModel<typeof categories, 'insert'>;
+type NewCategories = InferModel<typeof categories, 'insert'>;
 export async function action({ params, request, context }: ActionArgs) {
   const categoryId = params.slug
   const formData = await request.formData();
   const name = formData.get('name') as string;
-  const newCategory: NewTags = {
+  const newCategory: NewCategories = {
     name: name,
     createdAt: new Date(),
     updatedAt: new Date(),

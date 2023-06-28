@@ -17,6 +17,7 @@ export const meta: V2_MetaFunction = () => {
 
 type NewImage = InferModel<typeof images, 'insert'>;
 type NewimagesToTags = InferModel<typeof imagesToTags, 'insert'>;
+type NewCategories = InferModel<typeof categories, 'insert'>;
 export async function action({request, context}: ActionArgs) {
 
   const uploadHandler = unstable_createMemoryUploadHandler({
@@ -51,8 +52,17 @@ export async function action({request, context}: ActionArgs) {
     updatedAt: new Date(),
   }
 
+  const newCategries: NewCategories = {
+    name: name,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }
+
   const db = createClient(context.DB as D1Database);
-  await db.insert(images).values(newImage).run();
+  await db.insert(categories).values(newCategries).run();
+
+  // const db = createClient(context.DB as D1Database);
+  // const imageResponse = await db.insert(images).values(newImage).run();
   // const tags = formData.get('tags');
   // const imageId = imageResponse.id
 
