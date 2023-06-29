@@ -19,12 +19,13 @@ type NewImage = InferModel<typeof images, 'insert'>;
 export async function action({request, context}: ActionArgs) {
   const formData = await request.formData();
   const name = formData.get('name') as string;
+  const categoryId = formData.get('categoryId') as unknown as number;
   const newImage: NewImage = {
     key: '',
     name: name,
     createdAt: new Date(),
     updatedAt: new Date(),
-    categoryId: 1,
+    categoryId: categoryId,
   }
   const db = createClient(context.DB as D1Database);
   await db.insert(images).values(newImage).run();
