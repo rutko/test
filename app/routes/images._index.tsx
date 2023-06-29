@@ -29,7 +29,7 @@ export async function action({request, context}: ActionArgs) {
     categoryId: categoryId,
   }
   const db = createClient(context.DB as D1Database);
-  const imageResponse = await db.insert(images).values(newImage).run();
+  const imageResponse = await db.insert(images).values(newImage).returning().get();
 
   // const tags = formData.get('tagId');
   // const imageId = imageResponse.id
