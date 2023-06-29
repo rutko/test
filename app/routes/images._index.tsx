@@ -1,7 +1,7 @@
 import type { V2_MetaFunction } from "@remix-run/cloudflare";
-import { redirect, unstable_createMemoryUploadHandler, unstable_parseMultipartFormData } from '@remix-run/cloudflare';
+import { redirect, unstable_createMemoryUploadHandler, unstable_parseMultipartFormData , json } from '@remix-run/cloudflare';
 import type { LoaderArgs, ActionArgs } from '@remix-run/cloudflare';
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useActionData } from "@remix-run/react";
 import type { InferModel } from 'drizzle-orm';
 import { createClient } from "~/db/client.server"
 import { categories, tags, images, imagesToTags } from '~/db/schema';
@@ -31,18 +31,18 @@ export async function action({request, context}: ActionArgs) {
   const db = createClient(context.DB as D1Database);
   const imageResponse = await db.insert(images).values(newImage).run();
 
-    const tags = formData.get('tagId');
-    const imageId = imageResponse.id
+  // const tags = formData.get('tagId');
+  // const imageId = imageResponse.id
 
 
-    const newImagesToTags: NewImagesToTags = {
-      imageId: imageId,
-      tagId: tags,
-    }
+  // const newImagesToTags: NewImagesToTags = {
+  //   imageId: imageId,
+  //   tagId: tags,
+  // }
 
-    await db.insert(imagesToTags).values(newImagesToTags).run();  
+  // await db.insert(imagesToTags).values(newImagesToTags).run();  
 
-  return redirect(`/images`);
+  return json({ object: imageResponse });
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
@@ -60,7 +60,9 @@ export const loader = async ({ context }: LoaderArgs) => {
 
 export default function Images() {
   const data = useLoaderData<typeof loader>();
+  const actionData = useActionData<{ message: string; object: R2Object }>();
   console.log(data)
+  console.log(actionData)
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       <h1>Synca1 Admin</h1>
