@@ -19,51 +19,54 @@ type NewImage = InferModel<typeof images, 'insert'>;
 type NewImagesToTags = InferModel<typeof imagesToTags, 'insert'>;
 export async function action({request, context}: ActionArgs) {
 
-  // const uploadHandler = unstable_createMemoryUploadHandler({
-  //   maxPartSize: 1024 * 1024 * 10,
-  // });
+  const uploadHandler = unstable_createMemoryUploadHandler({
+    maxPartSize: 1024 * 1024 * 10,
+  });
 
-  // const form = await unstable_parseMultipartFormData(request, uploadHandler);
+  const form = await unstable_parseMultipartFormData(request, uploadHandler);
 
-  // const file = form.get('file') as Blob;
-  // invariant(file, 'File is required');
+  const file = form.get('file') as Blob;
+  invariant(file, 'File is required');
 
-  // const fileName = `${uuid()}.${file.type.split('/')[1]}`;
+  const fileName = `${uuid()}.${file.type.split('/')[1]}`;
 
-  // const bucket = (context.MY_BUCKET as R2Bucket);
-  // // R2バケットにアップロードする
-  // const response = await bucket.put(fileName, await file.arrayBuffer(), {
-  //   httpMetadata: {
-  //     contentType: file.type,
-  //   },
-  // });
+  const bucket = (context.MY_BUCKET as R2Bucket);
+  // R2バケットにアップロードする
+  const response = await bucket.put(fileName, await file.arrayBuffer(), {
+    httpMetadata: {
+      contentType: file.type,
+    },
+  });
 
 
   const formData = await request.formData();
-  // const name = formData.get('name') as string;
-  // const categoryId = formData.get('categoryId') as unknown as number;
-  // const newImage: NewImage = {
-  //   key: response.key,
-  //   name: name,
-  //   createdAt: new Date(),
-  //   updatedAt: new Date(),
-  //   categoryId: categoryId,
-  // }
-  // const db = createClient(context.DB as D1Database);
-  // const imageResponse = await db.insert(images).values(newImage).returning().get();
+  const name = formData.get('name') as string;
+  const categoryId = formData.get('categoryId') as unknown as number;
+  const newImage: NewImage = {
+    key: response.key,
+    name: name,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    categoryId: categoryId,
+  }
+  const db = createClient(context.DB as D1Database);
+  const imageResponse = await db.insert(images).values(newImage).returning().get();
 
   const tags = formData.getAll('tagId');
-  // const imageId = imageResponse.id
+  const imageId = imageResponse.id
 
 
-  // const newImagesToTags: NewImagesToTags = {
-  //   imageId: imageId,
-  //   tagId: tags,
-  // }
+  const tagNums = tags.map(Number)
 
-  // await db.insert(imagesToTags).values(newImagesToTags).run();  
+  for (let i=0; i > tagNums.length; i++) {
+    const newImagesToTags: NewImagesToTags = {
+      imageId: imageId,
+      tagId: i,
+    }
 
-  return json({ object: tags });
+  await db.insert(imagesToTags).values(newImagesToTags).run();  
+  }
+  return redirect(`/images`);
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
