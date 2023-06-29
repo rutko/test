@@ -66,7 +66,7 @@ export async function action({request, context}: ActionArgs) {
 
   // await db.insert(imagesToTags).values(newImagesToTags).run();  
   // }
-  return json({object: response});
+  return json({object: response.key});
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
