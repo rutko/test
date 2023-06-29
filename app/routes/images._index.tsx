@@ -16,6 +16,7 @@ export const meta: V2_MetaFunction = () => {
 };
 
 type NewImage = InferModel<typeof images, 'insert'>;
+type NewImagesToTags = InferModel<typeof imagesToTags, 'insert'>;
 export async function action({request, context}: ActionArgs) {
   const formData = await request.formData();
   const name = formData.get('name') as string;
@@ -28,7 +29,19 @@ export async function action({request, context}: ActionArgs) {
     categoryId: categoryId,
   }
   const db = createClient(context.DB as D1Database);
-  await db.insert(images).values(newImage).run();
+  const imageResponse = await db.insert(images).values(newImage).run();
+
+    const tags = formData.get('tagId');
+    const imageId = imageResponse.id
+
+
+    const newImagesToTags: NewImagesToTags = {
+      imageId: imageId,
+      tagId: tags,
+    }
+
+    await db.insert(imagesToTags).values(newImagesToTags).run();  
+
   return redirect(`/images`);
 }
 
