@@ -43,15 +43,15 @@ export async function action({request, context}: ActionArgs) {
   const name = formData.get('name') as string;
   const category = formData.get('category');
   const categoryNum = Number(category)
-  const newImage: NewImage = {
-    key: response.key,
-    name: name,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    categoryId: 1,
-  }
-  const db = createClient(context.DB as D1Database);
-  const imageResponse = await db.insert(images).values(newImage).returning().get();
+  // const newImage: NewImage = {
+  //   key: response.key,
+  //   name: name,
+  //   createdAt: new Date(),
+  //   updatedAt: new Date(),
+  //   categoryId: 1,
+  // }
+  // const db = createClient(context.DB as D1Database);
+  // const imageResponse = await db.insert(images).values(newImage).returning().get();
 
   // const tags = formData.getAll('tagId');
   // const imageId = imageResponse.id
