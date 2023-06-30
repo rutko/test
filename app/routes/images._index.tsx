@@ -39,9 +39,9 @@ export async function action({request, context}: ActionArgs) {
   });
 
 
-  const formData = await request.formData();
-  const name = formData.get('name') as string;
-  const categoryId = formData.get('categoryId');
+  // const formData = await request.formData();
+  // const name = formData.get('name') as string;
+  // const categoryId = formData.get('categoryId') as unknown as number;
   // const newImage: NewImage = {
   //   key: response.key,
   //   name: name,
@@ -66,7 +66,7 @@ export async function action({request, context}: ActionArgs) {
 
   // await db.insert(imagesToTags).values(newImagesToTags).run();  
   // }
-  return json({object: name});
+  return json({object: response.key});
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
