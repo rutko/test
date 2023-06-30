@@ -4,8 +4,8 @@ import { relations } from 'drizzle-orm'
 export const categories = sqliteTable('categories', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
 	name: text('name'),
-  createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
-  updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull(),
+	createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
+	updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull(),
 });
 
 export const categoriesRelations = relations(categories, ({ many }) => ({

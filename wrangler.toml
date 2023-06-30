@@ -1,2 +1,7 @@
 compatibility_date = "2022-04-05"
 compatibility_flags = ["streams_enable_constructors"]
+
+[[ d1_databases ]]
+binding = "DB"
+database_name = "synca1-db"
+database_id = "86fb7cd2-599b-499c-bcd5-c693f6dbb623"
