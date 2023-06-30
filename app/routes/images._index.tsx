@@ -44,7 +44,7 @@ export async function action({request, context}: ActionArgs) {
   const category = formData.get('category');
   const categoryId = Number(category)
   const newImage: NewImage = {
-    key: response.key,
+    key: '',
     name: name,
     createdAt: new Date(),
     updatedAt: new Date(),
