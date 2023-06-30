@@ -39,9 +39,9 @@ export async function action({request, context}: ActionArgs) {
   });
 
 
-  const formData = await request.formData();
+  const formData = new URLSearchParams(await request.text());
   const name = formData.get('name') as string;
-  const categoryId = formData.getAll('categoryId');
+  const categoryId = formData.get('category');
   // const newImage: NewImage = {
   //   key: response.key,
   //   name: name,
@@ -109,8 +109,8 @@ export default function Images() {
             <input name="file" type="file" required />
           </div>
           <div>
-            <label htmlFor="categoryId">カテゴリー選択（必須）</label>
-            <select name="categoryId">
+            <label htmlFor="category">カテゴリー選択（必須）</label>
+            <select name="category">
               {data.categories.map((c)=> (
                 <option key={c.id} value={c.id}>{c.name}</option>
               ))}
