@@ -41,7 +41,7 @@ export async function action({request, context}: ActionArgs) {
 
   const formData = await request.formData();
   const name = formData.get('name') as string;
-  const categoryId = formData.get('categoryId');
+  const categoryId = formData.getAll('categoryId');
   // const newImage: NewImage = {
   //   key: response.key,
   //   name: name,
