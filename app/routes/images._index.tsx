@@ -39,18 +39,18 @@ export async function action({request, context}: ActionArgs) {
   });
 
 
-  // const formData = await request.formData();
-  // const name = formData.get('name') as string;
-  // const categoryId = formData.get('categoryId') as unknown as number;
-  // const newImage: NewImage = {
-  //   key: response.key,
-  //   name: name,
-  //   createdAt: new Date(),
-  //   updatedAt: new Date(),
-  //   categoryId: categoryId,
-  // }
-  // const db = createClient(context.DB as D1Database);
-  // const imageResponse = await db.insert(images).values(newImage).returning().get();
+  const formData = await request.formData();
+  const name = formData.get('name') as string;
+  const categoryId = formData.get('categoryId') as unknown as number;
+  const newImage: NewImage = {
+    key: response.key,
+    name: name,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    categoryId: categoryId,
+  }
+  const db = createClient(context.DB as D1Database);
+  const imageResponse = await db.insert(images).values(newImage).returning().get();
 
   // const tags = formData.getAll('tagId');
   // const imageId = imageResponse.id
@@ -66,7 +66,7 @@ export async function action({request, context}: ActionArgs) {
 
   // await db.insert(imagesToTags).values(newImagesToTags).run();  
   // }
-  return json({object: response.key});
+  return json({object: imageResponse});
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
