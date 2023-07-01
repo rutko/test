@@ -13,17 +13,18 @@ export const meta: V2_MetaFunction = () => {
   ];
 };
 
+type NewCategories = InferModel<typeof categories, 'insert'>;
 type NewCategries = InferModel<typeof categories, 'insert'>;
-export async function action({request, context}: ActionArgs) {
+export async function action({ request, context }: ActionArgs) {
   const formData = await request.formData();
   const name = formData.get('name') as string;
-  const newCategries: NewCategries = {
+  const newCategory: NewCategories = {
     name: name,
     createdAt: new Date(),
     updatedAt: new Date(),
   }
   const db = createClient(context.DB as D1Database);
-  await db.insert(categories).values(newCategries).returning().get();
+  await db.insert(categories).values(newCategory).run();
   return redirect(`/categories`);
 }
 
