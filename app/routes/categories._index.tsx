@@ -18,6 +18,7 @@ export async function action({ request, context }: ActionArgs) {
   const formData = await request.formData();
   const name = formData.get('name') as string;
   const newCategory: NewCategories = {
+    id: 2,
     name: name,
     createdAt: new Date(),
     updatedAt: new Date(),
