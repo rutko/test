@@ -13,17 +13,17 @@ export const meta: V2_MetaFunction = () => {
   ];
 };
 
-type NewCategories = InferModel<typeof categories, 'insert'>;
-export async function action({ request, context }: ActionArgs) {
+type NewCategory = InferModel<typeof categories, 'insert'>;
+export async function action({request, context}: ActionArgs) {
   const formData = await request.formData();
   const name = formData.get('name') as string;
-  const newCategory: NewCategories = {
+  const newCategory: NewCategory = {
     name: name,
     createdAt: new Date(),
     updatedAt: new Date(),
   }
   const db = createClient(context.DB as D1Database);
-  db.insert(categories).values(newCategory).run();
+  await db.insert(categories).values(newCategory).run();
   return redirect(`/categories`);
 }
 
@@ -44,7 +44,7 @@ export default function Categries() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       <h1>Synca1 Admin</h1>
-      <form method="post">
+      <form method="post" action="/categories">
         <fieldset>
           <legend>カテゴリーの作成</legend>
           <div>
