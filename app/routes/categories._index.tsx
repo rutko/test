@@ -18,13 +18,12 @@ export async function action({ request, context }: ActionArgs) {
   const formData = await request.formData();
   const name = formData.get('name') as string;
   const newCategory: NewCategories = {
-    id: 2,
     name: name,
     createdAt: new Date(),
     updatedAt: new Date(),
   }
   const db = createClient(context.DB as D1Database);
-  await db.insert(categories).values(newCategory).returning();
+  db.insert(categories).values(newCategory).run();
   return redirect(`/categories`);
 }
 
