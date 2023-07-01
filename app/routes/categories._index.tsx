@@ -44,7 +44,7 @@ export default function Categries() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       <h1>Synca1 Admin</h1>
-      <form method="post" action="/categories">
+      <form method="post" action="/?index">
         <fieldset>
           <legend>カテゴリーの作成</legend>
           <div>
