@@ -23,7 +23,7 @@ export async function action({ request, context }: ActionArgs) {
     updatedAt: new Date(),
   }
   const db = createClient(context.DB as D1Database);
-  await db.insert(categories).values(newCategory)
+  await db.insert(categories).values(newCategory).returning();
   return redirect(`/categories`);
 }
 
