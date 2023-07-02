@@ -57,13 +57,13 @@ export default function Tags() {
         </fieldset>
       </form>
       {data.tags.length ? (
-         <ul>
+         <ol>
            {data.tags.map((t) => (
              <li key={t.id}>
                <a href={`/tags/${t.id}`}>{t.name}</a>
              </li>
            ))}
-         </ul>
+         </ol>
        ) : (
          <p>タグはまだ作成されていません</p>
        )}

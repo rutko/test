@@ -56,13 +56,13 @@ export default function Categries() {
         </fieldset>
       </form>
       {data.categories.length ? (
-         <ul>
+         <ol>
            {data.categories.map((c) => (
              <li key={c.id}>
                <a href={`/categories/${c.id}`}>{c.name}</a>
              </li>
            ))}
-         </ul>
+         </ol>
        ) : (
          <p>カテゴリーはまだ作成されていません</p>
        )}
