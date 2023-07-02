@@ -52,6 +52,8 @@ export const imagesToTagsRelations = relations(imagesToTags, ({ one }) => ({
 export const tags = sqliteTable('tags', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
 	name: text('name'),
+    createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
+    updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull(),
 });
 
 

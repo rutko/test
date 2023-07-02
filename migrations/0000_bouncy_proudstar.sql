@@ -1,12 +1,12 @@
 CREATE TABLE `categories` (
-	`id` integer AUTO_INCREMENT PRIMARY KEY NOT NULL,
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`name` text,
 	`createdAt` integer NOT NULL,
 	`updatedAt` integer NOT NULL
 );
 
 CREATE TABLE `images` (
-	`id` integer AUTO_INCREMENT PRIMARY KEY NOT NULL,
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`key` text NOT NULL,
 	`name` text,
 	`category_id` integer,
@@ -23,6 +23,8 @@ CREATE TABLE `images_to_tags` (
 );
 
 CREATE TABLE `tags` (
-	`id` integer AUTO_INCREMENT PRIMARY KEY NOT NULL,
-	`name` text
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`name` text,
+	`createdAt` integer NOT NULL,
+	`updatedAt` integer NOT NULL
 );

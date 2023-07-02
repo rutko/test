@@ -19,6 +19,8 @@ export async function action({request, context}: ActionArgs) {
   const name = formData.get('name') as string;
   const newTags: NewTags = {
     name: name,
+    createdAt: new Date(),
+    updatedAt: new Date(),
   }
   const db = createClient(context.DB as D1Database);
   await db.insert(tags).values(newTags).run();
@@ -36,7 +38,7 @@ export const loader = async ({ context }: LoaderArgs) => {
   return { tags: allTags }
 }
 
-export type Categries = InferModel<typeof tags>;
+export type Tags = InferModel<typeof tags>;
 export default function Tags() {
   const data = useLoaderData<typeof loader>();
   console.log(data)

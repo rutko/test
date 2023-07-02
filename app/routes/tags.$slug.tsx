@@ -21,6 +21,8 @@ export async function action({ params, request, context }: ActionArgs) {
   const name = formData.get('name') as string;
   const newTag: NewTags = {
     name: name,
+    createdAt: new Date(),
+    updatedAt: new Date(),
   }
   const db = createClient(context.DB as D1Database);
   await db.update(tags).set(newTag).where(eq(tags.id, tagId)).run();
