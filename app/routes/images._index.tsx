@@ -53,19 +53,19 @@ export async function action({request, context}: ActionArgs) {
   const db = createClient(context.DB as D1Database);
   const imageResponse = await db.insert(images).values(newImage).returning().get();
 
-  // const tags = formData.getAll('tagId');
-  // const imageId = imageResponse.id
+  const tags = formData.getAll('tags');
+  const imageId = imageResponse.id
 
 
-  // const tagNums = tags.map(Number)
+  const tagNums = tags.map(Number)
 
-  // for (let i=0; i > tagNums.length; i++) {
-  //   const newImagesToTags: NewImagesToTags = {
-  //     imageId: imageId,
-  //     tagId: i,
-  //   }
-  //   await db.insert(imagesToTags).values(newImagesToTags).run();  
-  // }
+  for (let i=0; i > tagNums.length; i++) {
+    const newImagesToTags: NewImagesToTags = {
+      imageId: imageId,
+      tagId: i,
+    }
+    await db.insert(imagesToTags).values(newImagesToTags).run();  
+  }
   return redirect(`/images`);
 }
 
@@ -117,8 +117,8 @@ export default function Images() {
             </select>
           </div>
           <div>
-            <label htmlFor="tagId">タグ選択（複数可）</label>
-            <select multiple name="tagId">
+            <label htmlFor="tags">タグ選択（複数可）</label>
+            <select multiple name="tags">
               {data.tags.map((t)=> (
                 <option key={t.id} value={t.id}>{t.name}</option>
               ))}
