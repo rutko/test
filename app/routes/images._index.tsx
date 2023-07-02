@@ -53,20 +53,20 @@ export async function action({request, context}: ActionArgs) {
   const db = createClient(context.DB as D1Database);
   const imageResponse = await db.insert(images).values(newImage).returning().get();
 
-  const tags = formData.getAll('tags');
-  const imageId = imageResponse.id
+  // const tags = formData.getAll('tags');
+  // const imageId = imageResponse.id
 
 
-  const tagNums = tags.map(Number)
+  // const tagNums = tags.map(Number)
 
-  for (let i=0; i > tagNums.length; i++) {
-    const newImagesToTags: NewImagesToTags = {
-      imageId: imageId,
-      tagId: i,
-    }
-    await db.insert(imagesToTags).values(newImagesToTags).run();  
-  }
-  return redirect(`/images`);
+  // for (let i=0; i > tagNums.length; i++) {
+  //   const newImagesToTags: NewImagesToTags = {
+  //     imageId: imageId,
+  //     tagId: i,
+  //   }
+  //   await db.insert(imagesToTags).values(newImagesToTags).run();  
+  // }
+  return json({object: imageResponse});
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
