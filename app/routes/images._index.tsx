@@ -97,7 +97,7 @@ export default function Images() {
           <a href="/tags">タグ</a>
         </li>
       </ul>
-      <form method="post" action="/images" encType="multipart/form-data">
+      <form method="post" encType="multipart/form-data">
         <fieldset>
           <legend>画像のアップロード</legend>
           <div>
