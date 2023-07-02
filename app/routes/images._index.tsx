@@ -42,7 +42,6 @@ export async function action({request, context}: ActionArgs) {
   const formData = new URLSearchParams(await request.text());
   const name = formData.get('name') as string;
   const category = formData.get('category');
-  const categoryNum = Number(category)
   // const newImage: NewImage = {
   //   key: response.key,
   //   name: name,
@@ -66,7 +65,7 @@ export async function action({request, context}: ActionArgs) {
   //   }
   //   await db.insert(imagesToTags).values(newImagesToTags).run();  
   // }
-  return json({object: categoryNum});
+  return json({message: category, object: response});
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
