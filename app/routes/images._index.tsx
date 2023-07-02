@@ -41,13 +41,13 @@ export async function action({request, context}: ActionArgs) {
 
   const formData = new URLSearchParams(await request.text());
   const name = formData.get('name') as string;
-  const category = formData.get('category');
+  // const category = formData.get('category');
   // const newImage: NewImage = {
   //   key: response.key,
   //   name: name,
   //   createdAt: new Date(),
   //   updatedAt: new Date(),
-  //   categoryId: categoryNum,
+  //   categoryId: category,
   // }
   // const db = createClient(context.DB as D1Database);
   // const imageResponse = await db.insert(images).values(newImage).returning().get();
@@ -65,7 +65,7 @@ export async function action({request, context}: ActionArgs) {
   //   }
   //   await db.insert(imagesToTags).values(newImagesToTags).run();  
   // }
-  return json({message: category, object: response});
+  return json({message: name, object: response});
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
