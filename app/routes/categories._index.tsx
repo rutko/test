@@ -5,6 +5,7 @@ import { useLoaderData } from "@remix-run/react";
 import type { InferModel } from 'drizzle-orm';
 import { createClient } from "~/db/client.server"
 import { categories } from '~/db/schema';
+import { desc } from "drizzle-orm";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -29,7 +30,7 @@ export async function action({request, context}: ActionArgs) {
 
 export const loader = async ({ context }: LoaderArgs) => {
   const db = createClient(context.DB as D1Database);
-  const allCategories = await db.select().from(categories).all()
+  const allCategories = await db.select().from(categories).orderBy(desc(categories.createdAt)).all()
   if (!allCategories) {
     throw new Response("Not Found", {
       status: 404,
@@ -56,7 +57,7 @@ export default function Categries() {
         </fieldset>
       </form>
       {data.categories.length ? (
-         <ol>
+         <ol reversed>
            {data.categories.map((c) => (
              <li key={c.id}>
                <a href={`/categories/${c.id}`}>{c.name}</a>
