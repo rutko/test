@@ -24,23 +24,24 @@ export async function action({request, context}: ActionArgs) {
   });
 
   const form = await unstable_parseMultipartFormData(request, uploadHandler);
+  const files = form.getAll('file')
 
-  const file = form.get('file') as Blob;
-  invariant(file, 'File is required');
+  // const file = form.get('file') as Blob;
+  // invariant(file, 'File is required');
 
-  const fileName = `${uuid()}.${file.type.split('/')[1]}`;
+  // const fileName = `${uuid()}.${file.type.split('/')[1]}`;
 
-  const bucket = (context.MY_BUCKET as R2Bucket);
-  // R2バケットにアップロードする
-  const response = await bucket.put(fileName, await file.arrayBuffer(), {
-    httpMetadata: {
-      contentType: file.type,
-    },
-  });
+  // const bucket = (context.MY_BUCKET as R2Bucket);
+  // // R2バケットにアップロードする
+  // const response = await bucket.put(fileName, await file.arrayBuffer(), {
+  //   httpMetadata: {
+  //     contentType: file.type,
+  //   },
+  // });
 
 
-  const formData = new URLSearchParams(await request.text());
-  const name = formData.get('name') as string;
+  // const formData = new URLSearchParams(await request.text());
+  // const name = formData.get('name') as string;
   // const category = formData.get('category');
   // const newImage: NewImage = {
   //   key: response.key,
@@ -65,7 +66,7 @@ export async function action({request, context}: ActionArgs) {
   //   }
   //   await db.insert(imagesToTags).values(newImagesToTags).run();  
   // }
-  return json({message: name, object: response});
+  return json({object: files});
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
@@ -105,7 +106,7 @@ export default function Images() {
             <input name="name" type="text" />
           </div>
           <div>
-            <input name="file" type="file" required />
+            <input name="file" type="file" required multiple />
           </div>
           <div>
             <label htmlFor="category">カテゴリー選択（必須）</label>
