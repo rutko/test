@@ -115,14 +115,14 @@ export default function Images() {
               ))}
             </select>
           </div>
-          <div>
+          {/* <div>
             <label htmlFor="tags">タグ選択（複数可）</label>
             <select multiple name="tags">
               {data.tags.map((t)=> (
                 <option key={t.id} value={t.id}>{t.name}</option>
               ))}
             </select>
-          </div>
+          </div> */}
 
           <button type="submit">作成</button>
         </fieldset>
