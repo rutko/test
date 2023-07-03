@@ -56,7 +56,7 @@ export default function Categries() {
         </fieldset>
       </form>
       {data.categories.length ? (
-         <ol reversed>
+         <ol>
            {data.categories.map((c) => (
              <li key={c.id}>
                <a href={`/categories/${c.id}`}>{c.name}</a>

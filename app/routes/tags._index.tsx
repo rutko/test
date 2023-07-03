@@ -5,6 +5,7 @@ import { useLoaderData } from "@remix-run/react";
 import type { InferModel } from 'drizzle-orm';
 import { createClient } from "~/db/client.server"
 import { tags } from '~/db/schema';
+import { desc } from "drizzle-orm";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -29,7 +30,7 @@ export async function action({request, context}: ActionArgs) {
 
 export const loader = async ({ context }: LoaderArgs) => {
   const db = createClient(context.DB as D1Database);
-  const allTags = await db.select().from(tags).all()
+  const allTags = await db.select().from(tags).orderBy(desc(tags.createdAt)).all()
   if (!allTags) {
     throw new Response("Not Found", {
       status: 404,
@@ -57,7 +58,7 @@ export default function Tags() {
         </fieldset>
       </form>
       {data.tags.length ? (
-         <ol reversed>
+         <ol>
            {data.tags.map((t) => (
              <li key={t.id}>
                <a href={`/tags/${t.id}`}>{t.name}</a>
