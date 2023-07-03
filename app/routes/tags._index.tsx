@@ -58,7 +58,7 @@ export default function Tags() {
         </fieldset>
       </form>
       {data.tags.length ? (
-         <ol>
+         <ol reversed>
            {data.tags.map((t) => (
              <li key={t.id}>
                <a href={`/tags/${t.id}`}>{t.name}</a>
