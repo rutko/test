@@ -61,7 +61,7 @@ export async function action({request, context}: ActionArgs) {
       name: name,
       createdAt: new Date(),
       updatedAt: new Date(),
-      categoryId: category,
+      categoryId: 1,
     }
 
     const db = createClient(context.DB as D1Database);
