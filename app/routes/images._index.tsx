@@ -52,7 +52,7 @@ export async function action({request, context}: ActionArgs) {
   const r2Responses = await Promise.all(uploadR2Promises);
 
 
-  for (let i=0; i > r2Responses.length; i++) {
+  // for (let i=0; i > r2Responses.length; i++) {
     const formData = new URLSearchParams(await request.text());
     const name = formData.get('name') as string;
     const category = formData.get('category') as unknown as number;
@@ -65,10 +65,10 @@ export async function action({request, context}: ActionArgs) {
       categoryId: 1,
     }
     const db = createClient(context.DB as D1Database);
-    await db.insert(images).values(newImage).run();
-  }
+    const test = await db.insert(images).values(newImage).run();
+  // }
 
-  return json({object: r2Responses[0]});
+  return json({object: test});
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
