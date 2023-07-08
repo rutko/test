@@ -27,45 +27,31 @@ export async function action({request, context}: ActionArgs) {
 
   const files = form.getAll('file');
 
-  for (let i=0; i > files.length; i++) {
-    invariant(files[i], 'File is required');
-    const fileName = `${uuid()}.${files[i].type.split('/')[1]}`;
 
+  // Create an array of promises to upload each file.
+  const uploadPromises = files.map(async (file) => {
+    invariant(file, 'File is required');
+
+    const fileName = `${uuid()}.${file.type.split('/')[1]}`;
+
+    // Assuming MY_BUCKET is defined in the context...
     const bucket = (context.MY_BUCKET as R2Bucket);
 
     // Upload each file to the R2 bucket.
-    const response = await bucket.put(fileName, await files[i].arrayBuffer(), {
+    const response = await bucket.put(fileName, await file.arrayBuffer(), {
       httpMetadata: {
-        contentType: files[i].type,
+        contentType: file.type,
       },
     });
-  }
 
-  return { categories: 'HOGE' }
+    // Return the response for further use if needed.
+    return response;
+  });
 
+  // Wait for all uploads to finish.
+  const responses = await Promise.all(uploadPromises);
 
-  // // Create an array of promises to upload each file.
-  // const uploadPromises = files.map(async (file) => {
-  //   invariant(file, 'File is required');
-
-  //   const fileName = `${uuid()}.${file.type.split('/')[1]}`;
-
-  //   // Assuming MY_BUCKET is defined in the context...
-  //   const bucket = (context.MY_BUCKET as R2Bucket);
-
-  //   // Upload each file to the R2 bucket.
-  //   const response = await bucket.put(fileName, await file.arrayBuffer(), {
-  //     httpMetadata: {
-  //       contentType: file.type,
-  //     },
-  //   });
-
-  //   // Return the response for further use if needed.
-  //   return response;
-  // });
-
-  // // Wait for all uploads to finish.
-  // const responses = await Promise.all(uploadPromises);
+  return redirect(`/images`);
 
 
 
