@@ -58,12 +58,13 @@ export async function action({request, context}: ActionArgs) {
     const formData = new URLSearchParams(await request.text());
     const name = formData.get('name') as string;
     const category = formData.get('category');
+    const categoryId = Number(category)
     const newImage: NewImage = {
       key: response.key,
       name: name,
       createdAt: new Date(),
       updatedAt: new Date(),
-      categoryId: category,
+      categoryId: categoryId,
     }
 
     const db = createClient(context.DB as D1Database);
