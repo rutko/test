@@ -65,7 +65,7 @@ export async function action({request, context}: ActionArgs) {
       categoryId: 1,
     }
     const db = createClient(context.DB as D1Database);
-    const test = await db.insert(images).values(newImage).run();
+    await db.insert(images).values(newImage).returning().get();
   // }
 
   return redirect(`/images`);
