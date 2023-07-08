@@ -16,34 +16,34 @@ export const images = sqliteTable('images', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   key: text('key').notNull(),
   name: text('name'),
-  categoryId: integer('category_id'),
+  category_id: integer('category_id'),
   createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
   updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull(),
 });
 
 export const imagesRelations = relations(images, ({ one, many }) => ({
 	author: one(categories, {
-		fields: [images.categoryId],
+		fields: [images.category_id],
 		references: [categories.id],
 	}),
   imagesToTags: many(imagesToTags),
 }));
 
 export const imagesToTags = sqliteTable('images_to_tags', {
-  imageId: integer('image_id').notNull().references(() => images.id),
-  tagId: integer('tag_id').notNull().references(() => tags.id),
+	image_id: integer('image_id').notNull().references(() => images.id),
+	tag_id: integer('tag_id').notNull().references(() => tags.id),
 }, (table) => ({
-    compositePk: primaryKey(table.imageId, table.tagId),
+    compositePk: primaryKey(table.image_id, table.tag_id),
   }),
 );
 
 export const imagesToTagsRelations = relations(imagesToTags, ({ one }) => ({
 	tag: one(tags, {
-		fields: [imagesToTags.tagId],
+		fields: [imagesToTags.tag_id],
 		references: [tags.id],
 	}),
 	image: one(images, {
-		fields: [imagesToTags.imageId],
+		fields: [imagesToTags.image_id],
 		references: [images.id],
 	}),
 }));

@@ -19,40 +19,40 @@ type NewImage = InferModel<typeof images, 'insert'>;
 type NewImagesToTags = InferModel<typeof imagesToTags, 'insert'>;
 export async function action({request, context}: ActionArgs) {
 
-  // const uploadHandler = unstable_createMemoryUploadHandler({
-  //   maxPartSize: 1024 * 1024 * 10,
-  // });
+  const uploadHandler = unstable_createMemoryUploadHandler({
+    maxPartSize: 1024 * 1024 * 10,
+  });
 
-  // const form = await unstable_parseMultipartFormData(request, uploadHandler);
+  const form = await unstable_parseMultipartFormData(request, uploadHandler);
 
-  // const files = form.getAll('file');
-
-
-  // // Create an array of promises to upload each file.
-  // const uploadR2Promises = files.map(async (file) => {
-  //   invariant(file, 'File is required');
-
-  //   const fileName = `${uuid()}.${file.type.split('/')[1]}`;
-
-  //   // Assuming MY_BUCKET is defined in the context...
-  //   const bucket = (context.MY_BUCKET as R2Bucket);
-
-  //   // Upload each file to the R2 bucket.
-  //   const response = await bucket.put(fileName, await file.arrayBuffer(), {
-  //     httpMetadata: {
-  //       contentType: file.type,
-  //     },
-  //   });
-
-  //   // Return the response for further use if needed.
-  //   return response;
-  // });
-
-  // // Wait for all uploads to finish.
-  // const r2Responses = await Promise.all(uploadR2Promises);
+  const files = form.getAll('file');
 
 
-  // for (let i=0; i > r2Responses.length; i++) {
+  // Create an array of promises to upload each file.
+  const uploadR2Promises = files.map(async (file) => {
+    invariant(file, 'File is required');
+
+    const fileName = `${uuid()}.${file.type.split('/')[1]}`;
+
+    // Assuming MY_BUCKET is defined in the context...
+    const bucket = (context.MY_BUCKET as R2Bucket);
+
+    // Upload each file to the R2 bucket.
+    const response = await bucket.put(fileName, await file.arrayBuffer(), {
+      httpMetadata: {
+        contentType: file.type,
+      },
+    });
+
+    // Return the response for further use if needed.
+    return response;
+  });
+
+  // Wait for all uploads to finish.
+  const r2Responses = await Promise.all(uploadR2Promises);
+
+
+  for (let i=0; i > r2Responses.length; i++) {
     const formData = new URLSearchParams(await request.text());
     const name = formData.get('name') as string;
     const category = formData.get('category');
@@ -66,7 +66,7 @@ export async function action({request, context}: ActionArgs) {
     }
     const db = createClient(context.DB as D1Database);
     await db.insert(images).values(newImage).returning().get();
-  // }
+  }
 
   return redirect(`/images`);
 }
