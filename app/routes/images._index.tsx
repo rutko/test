@@ -41,6 +41,8 @@ export async function action({request, context}: ActionArgs) {
     });
   }
 
+  return { categories: 'HOGE' }
+
 
   // // Create an array of promises to upload each file.
   // const uploadPromises = files.map(async (file) => {
