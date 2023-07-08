@@ -56,13 +56,12 @@ export async function action({request, context}: ActionArgs) {
     const formData = new URLSearchParams(await request.text());
     const name = formData.get('name') as string;
     const category = formData.get('category');
-    const categoryId = Number(category)
     const newImage: NewImage = {
       key: 'r2Responses[i].key',
       name: name,
       createdAt: new Date(),
       updatedAt: new Date(),
-      categoryId: categoryId,
+      categoryId: category,
     }
     const db = createClient(context.DB as D1Database);
     await db.insert(images).values(newImage).returning().get();
