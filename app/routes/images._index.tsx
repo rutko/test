@@ -52,30 +52,23 @@ export async function action({request, context}: ActionArgs) {
   const r2Responses = await Promise.all(uploadR2Promises);
 
 
-
-
-  const uploadD1Promises = r2Responses.map(async (response) =>{
+  for (let i=0; i > r2Responses.length; i++) {
     const formData = new URLSearchParams(await request.text());
     const name = formData.get('name') as string;
     const category = formData.get('category');
     const categoryId = Number(category)
     const newImage: NewImage = {
-      key: response.key,
+      key: r2Responses[i].key,
       name: name,
       createdAt: new Date(),
       updatedAt: new Date(),
       categoryId: categoryId,
     }
-
     const db = createClient(context.DB as D1Database);
-    const imageResponse = await db.insert(images).values(newImage).run();
+    await db.insert(images).values(newImage).run();
+  }
 
-    return imageResponse
-  })
-
-  const d1Responses = await Promise.all(uploadD1Promises);
-
-  return json({object: d1Responses});
+  return json({object: r2Responses[0]});
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
