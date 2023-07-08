@@ -52,7 +52,7 @@ export async function action({request, context}: ActionArgs) {
   // const r2Responses = await Promise.all(uploadR2Promises);
 
 
-  for (let i=0; i > r2Responses.length; i++) {
+  // for (let i=0; i > r2Responses.length; i++) {
     const formData = new URLSearchParams(await request.text());
     const name = formData.get('name') as string;
     const category = formData.get('category');
@@ -66,7 +66,7 @@ export async function action({request, context}: ActionArgs) {
     }
     const db = createClient(context.DB as D1Database);
     await db.insert(images).values(newImage).returning().get();
-  }
+  // }
 
   return redirect(`/images`);
 }
