@@ -107,10 +107,10 @@ export default function Images() {
       <form method="post" encType="multipart/form-data">
         <fieldset>
           <legend>画像のアップロード</legend>
-          {/* <div>
+          <div>
             <label htmlFor="name">画像のタイトル</label>
             <input name="name" type="text" />
-          </div> */}
+          </div>
           <div>
             <input name="file" type="file" required multiple />
           </div>
