@@ -29,7 +29,7 @@ export async function action({request, context}: ActionArgs) {
 
 
   // Create an array of promises to upload each file.
-  const uploadPromises = files.map(async (file) => {
+  const uploadR2Promises = files.map(async (file) => {
     invariant(file, 'File is required');
 
     const fileName = `${uuid()}.${file.type.split('/')[1]}`;
@@ -49,52 +49,30 @@ export async function action({request, context}: ActionArgs) {
   });
 
   // Wait for all uploads to finish.
-  const responses = await Promise.all(uploadPromises);
-
-  return json({object: responses});
+  const r2Responses = await Promise.all(uploadR2Promises);
 
 
+  const uploadD1Promises = r2Responses.map(async (response) =>{
+    const formData = new URLSearchParams(await request.text());
+    const name = formData.get('name') as string;
+    const category = formData.get('category');
+    const newImage: NewImage = {
+      key: response.key,
+      name: name,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      categoryId: category,
+    }
 
-  // const file = form.get('file') as Blob;
-  // invariant(file, 'File is required');
+    const db = createClient(context.DB as D1Database);
+    const imageResponse = await db.insert(images).values(newImage).returning().get();
 
-  // const fileName = `${uuid()}.${file.type.split('/')[1]}`;
+    return imageResponse
+  })
 
-  // const bucket = (context.MY_BUCKET as R2Bucket);
-  // // R2バケットにアップロードする
-  // const response = await bucket.put(fileName, await file.arrayBuffer(), {
-  //   httpMetadata: {
-  //     contentType: file.type,
-  //   },
-  // });
+  const d1Responses = await Promise.all(uploadD1Promises);
 
-
-  // const formData = new URLSearchParams(await request.text());
-  // const name = formData.get('name') as string;
-  // const category = formData.get('category');
-  // const newImage: NewImage = {
-  //   key: response.key,
-  //   name: name,
-  //   createdAt: new Date(),
-  //   updatedAt: new Date(),
-  //   categoryId: category,
-  // }
-  // const db = createClient(context.DB as D1Database);
-  // const imageResponse = await db.insert(images).values(newImage).returning().get();
-
-  // const tags = formData.getAll('tags');
-  // const imageId = imageResponse.id
-
-
-  // const tagNums = tags.map(Number)
-
-  // for (let i=0; i > tagNums.length; i++) {
-  //   const newImagesToTags: NewImagesToTags = {
-  //     imageId: imageId,
-  //     tagId: i,
-  //   }
-  //   await db.insert(imagesToTags).values(newImagesToTags).run();  
-  // }
+  return json({object: d1Responses});
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
