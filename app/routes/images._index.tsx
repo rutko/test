@@ -61,7 +61,7 @@ export async function action({request, context}: ActionArgs) {
       name: name,
       createdAt: new Date(),
       updatedAt: new Date(),
-      categoryId: category,
+      category_id: category,
     }
     const db = createClient(context.DB as D1Database);
     await db.insert(images).values(newImage).returning().get();
