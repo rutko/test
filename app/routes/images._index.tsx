@@ -29,7 +29,7 @@ export async function action({request, context}: ActionArgs) {
 
   for (let i=0; i > files.length; i++) {
     invariant(files[i], 'File is required');
-    const fileName = `${uuid()}.${files[0].type.split('/')[1]}`;
+    const fileName = `${uuid()}.${files[i].type.split('/')[1]}`;
 
     const bucket = (context.MY_BUCKET as R2Bucket);
 
