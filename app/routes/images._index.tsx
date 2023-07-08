@@ -65,10 +65,10 @@ export async function action({request, context}: ActionArgs) {
       category_id: categoryId,
     }
     const db = createClient(context.DB as D1Database);
-    await db.insert(images).values(newImage).returning().get();
+    const test = await db.insert(images).values(newImage).returning().get();
   // }
 
-  return redirect(`/images`);
+  return json({object: test});
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
