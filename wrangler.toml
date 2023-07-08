@@ -4,4 +4,4 @@ compatibility_flags = ["streams_enable_constructors"]
 [[ d1_databases ]]
 binding = "DB"
 database_name = "synca1-db"
-database_id = "86fb7cd2-599b-499c-bcd5-c693f6dbb623"
+database_id = "f3242c80-2541-4eca-87eb-b3e4304e6ebf"
