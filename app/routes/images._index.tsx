@@ -24,7 +24,48 @@ export async function action({request, context}: ActionArgs) {
   });
 
   const form = await unstable_parseMultipartFormData(request, uploadHandler);
-  const files = form.getAll('file')
+
+  const files = form.getAll('file');
+
+  for (let i=0; i > files.length; i++) {
+    invariant(files[i], 'File is required');
+    const fileName = `${uuid()}.${files[0].type.split('/')[1]}`;
+
+    const bucket = (context.MY_BUCKET as R2Bucket);
+
+    // Upload each file to the R2 bucket.
+    const response = await bucket.put(fileName, await files[i].arrayBuffer(), {
+      httpMetadata: {
+        contentType: files[i].type,
+      },
+    });
+  }
+
+
+  // // Create an array of promises to upload each file.
+  // const uploadPromises = files.map(async (file) => {
+  //   invariant(file, 'File is required');
+
+  //   const fileName = `${uuid()}.${file.type.split('/')[1]}`;
+
+  //   // Assuming MY_BUCKET is defined in the context...
+  //   const bucket = (context.MY_BUCKET as R2Bucket);
+
+  //   // Upload each file to the R2 bucket.
+  //   const response = await bucket.put(fileName, await file.arrayBuffer(), {
+  //     httpMetadata: {
+  //       contentType: file.type,
+  //     },
+  //   });
+
+  //   // Return the response for further use if needed.
+  //   return response;
+  // });
+
+  // // Wait for all uploads to finish.
+  // const responses = await Promise.all(uploadPromises);
+
+
 
   // const file = form.get('file') as Blob;
   // invariant(file, 'File is required');
@@ -66,7 +107,7 @@ export async function action({request, context}: ActionArgs) {
   //   }
   //   await db.insert(imagesToTags).values(newImagesToTags).run();  
   // }
-  return json({object: files});
+  // return json({object: files});
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
