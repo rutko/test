@@ -52,27 +52,29 @@ export async function action({request, context}: ActionArgs) {
   const r2Responses = await Promise.all(uploadR2Promises);
 
 
-  // const uploadD1Promises = r2Responses.map(async (response) =>{
-  //   const formData = new URLSearchParams(await request.text());
-  //   const name = formData.get('name') as string;
-  //   const category = formData.get('category');
-  //   const newImage: NewImage = {
-  //     key: response.key,
-  //     name: name,
-  //     createdAt: new Date(),
-  //     updatedAt: new Date(),
-  //     categoryId: 1,
-  //   }
 
-  //   const db = createClient(context.DB as D1Database);
-  //   const imageResponse = await db.insert(images).values(newImage).returning().get();
 
-  //   return imageResponse
-  // })
+  const uploadD1Promises = r2Responses.map(async (response) =>{
+    const formData = new URLSearchParams(await request.text());
+    const name = formData.get('name') as string;
+    const category = formData.get('category');
+    const newImage: NewImage = {
+      key: response.key,
+      name: name,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      categoryId: category,
+    }
 
-  // const d1Responses = await Promise.all(uploadD1Promises);
+    const db = createClient(context.DB as D1Database);
+    const imageResponse = await db.insert(images).values(newImage).run();
 
-  return json({object: r2Responses});
+    return imageResponse
+  })
+
+  const d1Responses = await Promise.all(uploadD1Promises);
+
+  return json({object: d1Responses});
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
