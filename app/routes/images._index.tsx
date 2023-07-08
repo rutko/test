@@ -51,7 +51,7 @@ export async function action({request, context}: ActionArgs) {
   // Wait for all uploads to finish.
   const responses = await Promise.all(uploadPromises);
 
-  return redirect(`/images`);
+  return json({object: responses});
 
 
 
@@ -95,7 +95,6 @@ export async function action({request, context}: ActionArgs) {
   //   }
   //   await db.insert(imagesToTags).values(newImagesToTags).run();  
   // }
-  // return json({object: files});
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
