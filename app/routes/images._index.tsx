@@ -68,7 +68,8 @@ export async function action({request, context}: ActionArgs) {
     return redirect(`/images`);
   } catch (error) {
     // debug code
-    return new Response(error.message || 'Internal server error', { status: 500 });
+    console.log(error)
+    return new Response(error.message, {error} || 'Internal server error', { status: 500 });
   }
 }
 
