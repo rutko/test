@@ -57,7 +57,7 @@ export async function action({request, context}: ActionArgs) {
       }
 
       const db = createClient(context.DB as D1Database);
-      const d1Response = await db.insert(images).values(newImage).run();
+      const d1Response = await db.insert(images).values(newImage).returning().get();
       console.log(d1Response)
       return d1Response
     });
