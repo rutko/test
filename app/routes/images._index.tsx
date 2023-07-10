@@ -44,32 +44,34 @@ export async function action({request, context}: ActionArgs) {
       },
     });
 
-    const formData = new URLSearchParams(await request.text());
-    const name = formData.get('name') as string;
-    // const category = formData.get('category');
-    // const categoryId = Number(category)
-    const newImage: NewImage = {
-      key: 'TEST',
-      name: name,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      category_id: 1,
-    }
+    // const formData = new URLSearchParams(await request.text());
+    // const name = formData.get('name') as string;
+    // // const category = formData.get('category');
+    // // const categoryId = Number(category)
+    // const newImage: NewImage = {
+    //   key: 'TEST',
+    //   name: name,
+    //   createdAt: new Date(),
+    //   updatedAt: new Date(),
+    //   category_id: 1,
+    // }
 
-    // カテゴリーは追加できるか？
-    const newCategory: NewCategory = {
-      name: name,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }
-    const db = createClient(context.DB as D1Database);
-    const d1Response = await db.insert(categories).values(newCategory).run();
-    console.log(d1Response)
-    return d1Response
+    // const db = createClient(context.DB as D1Database);
+    // const d1Response = await db.insert(images).values(newImage).run();
+    // console.log(d1Response)
+    return response
   });
 
   // Wait for all uploads to finish.
   const r2Responses = await Promise.all(uploadR2Promises);
+
+  const newCategory: NewCategory = {
+    name: 'niji5',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }
+  const db = createClient(context.DB as D1Database);
+  await db.insert(categories).values(newCategory).run();
 
 
   // for (let i=0; i > r2Responses.length; i++) {
