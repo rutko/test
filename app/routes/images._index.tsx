@@ -52,10 +52,10 @@ export async function action({request, context}: ActionArgs) {
   const categoryId = Number(category)
   const newImage: NewImage = {
     key: 'TEST',
-    name: name,
+    name: 'name',
     createdAt: new Date(),
     updatedAt: new Date(),
-    category_id: categoryId,
+    category_id: 10,
   }
 
   const db = createClient(context.DB as D1Database);
