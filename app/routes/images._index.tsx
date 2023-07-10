@@ -65,7 +65,7 @@ export async function action({request, context}: ActionArgs) {
     // Wait for all uploads to finish.
     const r2Responses = await Promise.all(uploadR2Promises);
 
-    return redirect(`/images`);
+    return json({ object: r2Responses });
   } catch (error) {
     // debug code
     console.log(error)
