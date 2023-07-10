@@ -43,23 +43,23 @@ export async function action({request, context}: ActionArgs) {
       },
     });
 
-    return response
+    const formData = new URLSearchParams(await request.text());
+    const name = formData.get('name') as string;
+    const category = formData.get('category');
+    const categoryId = Number(category)
+    const newImage: NewImage = {
+      key: 'TEST',
+      name: 'name',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      category_id: 1,
+    }
+
+    const db = createClient(context.DB as D1Database);
+    const d1Response = await db.insert(images).values(newImage).run();
+    console.log(d1Response)
+    return d1Response
   });
-
-  const formData = new URLSearchParams(await request.text());
-  const name = formData.get('name') as string;
-  const category = formData.get('category');
-  const categoryId = Number(category)
-  const newImage: NewImage = {
-    key: 'TEST',
-    name: 'name',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    category_id: 10,
-  }
-
-  const db = createClient(context.DB as D1Database);
-  const d1Response = await db.insert(images).values(newImage).run();
 
   // Wait for all uploads to finish.
   const r2Responses = await Promise.all(uploadR2Promises);
