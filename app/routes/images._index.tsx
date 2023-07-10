@@ -22,7 +22,7 @@ export async function action({request, context}: ActionArgs) {
       maxPartSize: 1024 * 1024 * 10,
     });
 
-    const form = await unstable_parseMultipartFormData(request, uploadHandler);
+    const form = await unstable_parseMultipartFormData(request.clone(), uploadHandler);
 
     const files = form.getAll('file');
 
@@ -65,27 +65,10 @@ export async function action({request, context}: ActionArgs) {
     // Wait for all uploads to finish.
     const r2Responses = await Promise.all(uploadR2Promises);
 
-
-    // for (let i=0; i > r2Responses.length; i++) {
-    //   const formData = new URLSearchParams(await request.text());
-    //   const name = formData.get('name') as string;
-    //   const category = formData.get('category');
-    //   const categoryId = Number(category)
-    //   const newImage: NewImage = {
-    //     key: r2Responses[i].key,
-    //     name: name,
-    //     createdAt: new Date(),
-    //     updatedAt: new Date(),
-    //     category_id: 1,
-    //   }
-    //   const db = createClient(context.DB as D1Database);
-    //   const test = await db.insert(images).values(newImage).run();
-    //   }
-
     return redirect(`/images`);
   } catch (error) {
-    const error1 = error
-    return new Response(error1 || 'Internal server error', { status: 500 });
+    // debug code
+    return new Response(error.message || 'Internal server error', { status: 500 });
   }
 }
 
