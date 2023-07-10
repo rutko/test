@@ -15,8 +15,8 @@ export const meta: V2_MetaFunction = () => {
   ];
 };
 
+type NewCategory = InferModel<typeof categories, 'insert'>;
 type NewImage = InferModel<typeof images, 'insert'>;
-type NewImagesToTags = InferModel<typeof imagesToTags, 'insert'>;
 export async function action({request, context}: ActionArgs) {
 
   const uploadHandler = unstable_createMemoryUploadHandler({
@@ -49,14 +49,21 @@ export async function action({request, context}: ActionArgs) {
     // const category = formData.get('category');
     // const categoryId = Number(category)
     const newImage: NewImage = {
-      key: response.key,
+      key: 'TEST',
       name: name,
       createdAt: new Date(),
       updatedAt: new Date(),
       category_id: 1,
     }
+
+    // カテゴリーは追加できるか？
+    const newCategory: NewCategory = {
+      name: name,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }
     const db = createClient(context.DB as D1Database);
-    const d1Response = await db.insert(images).values(newImage).run();
+    const d1Response = await db.insert(categories).values(newCategory).run();
     console.log(d1Response)
     return d1Response
   });
@@ -81,7 +88,7 @@ export async function action({request, context}: ActionArgs) {
   //   const test = await db.insert(images).values(newImage).run();
   //   }
 
-  return json({object: r2Responses});
+  return redirect(`/images`);
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
