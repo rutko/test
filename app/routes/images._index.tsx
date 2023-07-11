@@ -68,7 +68,7 @@ export async function action({request, context}: ActionArgs) {
   } catch (error) {
     // debug code
     console.log(error)
-    return new Response(error.message, {error} || 'Internal server error', { status: 500 });
+    return new Response(error || 'Internal server error', { status: 500 });
   }
 }
 
