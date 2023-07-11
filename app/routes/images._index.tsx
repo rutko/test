@@ -57,8 +57,8 @@ export async function action({request, context}: ActionArgs) {
       }
 
       const db = createClient(context.DB as D1Database);
-      await db.insert(images).values(newImage)
-      return response
+      const d1Response = await db.insert(images).values(newImage).run()
+      return d1Response
     });
 
     // Wait for all uploads to finish.
