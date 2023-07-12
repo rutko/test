@@ -25,10 +25,8 @@ export async function action({request, context}: ActionArgs) {
     const form = await unstable_parseMultipartFormData(request.clone(), uploadHandler);
 
     const files = form.getAll('file');
-
-    const formData = new URLSearchParams(await request.clone().text());
-    const name = formData.get('name') as string;
-    const category = formData.get('category');
+    const name = form.get('name') as string;
+    const category = form.get('category');
     const categoryId = Number(category);
 
 
