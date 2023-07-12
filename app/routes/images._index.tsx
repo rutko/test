@@ -22,15 +22,15 @@ export async function action({request, context}: ActionArgs) {
       maxPartSize: 1024 * 1024 * 10,
     });
 
+    const form = await unstable_parseMultipartFormData(request.clone(), uploadHandler);
+
+    const files = form.getAll('file');
+
     const formData = new URLSearchParams(await request.text());
     const name = formData.get('name') as string;
     const category = formData.get('category');
     const categoryId = Number(category);
 
-
-    const form = await unstable_parseMultipartFormData(request.clone(), uploadHandler);
-
-    const files = form.getAll('file');
 
     // Create an array of promises to upload each file.
     const uploadR2Promises = files.map(async (file) => {
@@ -56,8 +56,8 @@ export async function action({request, context}: ActionArgs) {
         category_id: categoryId,
       }
 
-      // const db = createClient(context.DB as D1Database);
-      // const d1Response = await db.insert(images).values(newImage).run()
+      const db = createClient(context.DB as D1Database);
+      const d1Response = await db.insert(images).values(newImage).run()
       return {newImage}
     });
 
