@@ -26,7 +26,7 @@ export async function action({request, context}: ActionArgs) {
 
     const files = form.getAll('file');
 
-    const formData = new URLSearchParams(await request.text());
+    const formData = new URLSearchParams(await request.clone().text());
     const name = formData.get('name') as string;
     const category = formData.get('category');
     const categoryId = Number(category);
