@@ -22,6 +22,12 @@ export async function action({request, context}: ActionArgs) {
       maxPartSize: 1024 * 1024 * 10,
     });
 
+    const formData = new URLSearchParams(await request.text());
+    const name = formData.get('name') as string;
+    const category = formData.get('category');
+    const categoryId = Number(category);
+
+
     const form = await unstable_parseMultipartFormData(request.clone(), uploadHandler);
 
     const files = form.getAll('file');
@@ -41,11 +47,6 @@ export async function action({request, context}: ActionArgs) {
           contentType: file.type,
         },
       });
-
-      const formData = new URLSearchParams(await request.text());
-      const name = formData.get('name') as string;
-      const category = formData.get('category');
-      const categoryId = Number(category);
 
       const newImage: NewImage = {
         key: response.key,
