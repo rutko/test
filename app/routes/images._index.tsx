@@ -29,8 +29,6 @@ export async function action({request, context}: ActionArgs) {
     const formData = new URLSearchParams(await request.text());
     const name = formData.get('name') as string;
     const category = formData.get('category');
-    const categoryId = Number(category);
-
 
     // Create an array of promises to upload each file.
     const uploadR2Promises = files.map(async (file) => {
@@ -53,7 +51,7 @@ export async function action({request, context}: ActionArgs) {
         name: name,
         createdAt: new Date(),
         updatedAt: new Date(),
-        category_id: categoryId,
+        category_id: category,
       }
 
       // const db = createClient(context.DB as D1Database);
