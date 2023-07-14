@@ -55,19 +55,21 @@ export async function action({request, context}: ActionArgs) {
     // Wait for all uploads to finish.
     const r2Responses = await Promise.all(uploadR2Promises);
 
-    const newImage: NewImage = {
-      key: 'response.key',
-      name: name,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      category_id: categoryId,
-    }
+    const newImage: NewImage[] = r2Responses.map((response)=> {
+      return {
+        key: response.key,
+        name: name,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        category_id: categoryId,
+      }
+    }) 
 
-    const db = createClient(context.DB as D1Database);
-    const d1Response = await db.insert(images).values(newImage).returning().get();
+    // const db = createClient(context.DB as D1Database);
+    // const d1Response = await db.insert(images).values(newImage).returning().get();
 
 
-    return json({ object: d1Response });
+    return json({ object: newImage });
   } catch (error) {
     // debug code
     console.log(error)
