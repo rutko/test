@@ -66,9 +66,11 @@ export async function action({request, context}: ActionArgs) {
     }) 
 
     const db = createClient(context.DB as D1Database);
-    const d1Response = await db.insert(images).values(newImage).returning().get();
+    const d1Response = await db.insert(images).values(newImage).run()
 
-    return json({ object: d1Response });
+    console.log(d1Response)
+
+    return redirect(`/images`);
   } catch (error) {
     // debug code
     console.log(error)
