@@ -1,7 +1,7 @@
 import type { V2_MetaFunction, LoaderArgs, ActionArgs } from "@remix-run/cloudflare";
 import { redirect, unstable_createMemoryUploadHandler, unstable_parseMultipartFormData, json } from '@remix-run/cloudflare';
 import type { InferModel } from 'drizzle-orm';
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useActionData } from "@remix-run/react";
 import { createClient } from "~/db/client.server";
 import { images, categories, tags } from '~/db/schema';
 import invariant from 'tiny-invariant';
@@ -46,7 +46,7 @@ export async function action({request, context}: ActionArgs) {
     // const d1Response = await db.insert(images).values(newImages).run()
 
     console.log(newImages)
-    return json({images: newImages});
+    return json({object: newImages});
   } catch (error) {
     console.log(error)
     return new Response(error || 'Internal server error', { status: 500 });
@@ -68,7 +68,9 @@ export const loader = async ({ context }: LoaderArgs) => {
 
 export default function Images() {
   const data = useLoaderData<typeof loader>();
+  const actionData = useActionData<{ catregory: Number, message: string; object: R2Object }>();
   console.log(data)
+  console.log(actionData)
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
