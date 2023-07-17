@@ -13,7 +13,6 @@ export const meta: V2_MetaFunction = () => [
 ];
 
 type NewImage = InferModel<typeof images, 'insert'>;
-
 export async function action({request, context}: ActionArgs) {
   try {
     const form = await unstable_parseMultipartFormData(request.clone(), 
@@ -43,9 +42,9 @@ export async function action({request, context}: ActionArgs) {
 
     const newImages: NewImage[] = await Promise.all(uploadR2Promises);
     const db = createClient(context.DB as D1Database);
-    // const d1Response = await db.insert(images).values(newImages).run()
+    const d1Response = await db.insert(images).values(newImages)
 
-    return json({object: newImages});
+    return json({object: d1Response});
   } catch (error) {
     console.log(error)
     return new Response(error || 'Internal server error', { status: 500 });
@@ -65,9 +64,10 @@ export const loader = async ({ context }: LoaderArgs) => {
   return { categories: allCategories, tags: allTags, images: allImages }
 }
 
+export type Images = InferModel<typeof images>;
 export default function Images() {
   const data = useLoaderData<typeof loader>();
-  const actionData = useActionData<{ catregory: Number, message: string; object: R2Object }>();
+  const actionData = useActionData<{ catregory: Number, message: string; object: Images }>();
   console.log(data)
   console.log(actionData)
 
