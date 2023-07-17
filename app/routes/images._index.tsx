@@ -67,8 +67,8 @@ export const loader = async ({ context }: LoaderArgs) => {
 }
 
 export default function Images() {
-  const { categories, tags, images } = useLoaderData<typeof loader>();
-  console.log(images)
+  const data = useLoaderData<typeof loader>();
+  console.log(data)
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
