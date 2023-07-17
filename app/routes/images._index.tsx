@@ -42,11 +42,10 @@ export async function action({request, context}: ActionArgs) {
     });
 
     const newImages: NewImage[] = await Promise.all(uploadR2Promises);
-    // const db = createClient(context.DB as D1Database);
+    const db = createClient(context.DB as D1Database);
     // const d1Response = await db.insert(images).values(newImages).run()
 
-    console.log(newImages)
-    return json({object: newImages});
+    return json({object: db});
   } catch (error) {
     console.log(error)
     return new Response(error || 'Internal server error', { status: 500 });
