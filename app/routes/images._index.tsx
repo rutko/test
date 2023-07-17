@@ -42,7 +42,7 @@ export async function action({request, context}: ActionArgs) {
 
     const newImages: NewImage[] = await Promise.all(uploadR2Promises);
     const db = createClient(context.DB as D1Database);
-    const d1Response = await db.insert(images).values(newImages).returning();
+    const d1Response = await db.insert(images).values(newImages).run();
 
     return json({object: d1Response});
   } catch (error) {
