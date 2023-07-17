@@ -92,7 +92,7 @@ export default function Images() {
           <div>
             <label htmlFor="category">カテゴリー選択（必須）</label>
             <select name="category">
-              {categories.map((c)=> <option key={c.id} value={c.id}>{c.name}</option>)}
+              {data.categories.map((c)=> <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </div>
           <button type="submit">作成</button>
