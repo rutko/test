@@ -46,7 +46,7 @@ export async function action({request, context}: ActionArgs) {
     // const d1Response = await db.insert(images).values(newImages).run()
 
     console.log(newImages)
-    return json({object: newImages});
+    return json({images: newImages});
   } catch (error) {
     console.log(error)
     return new Response(error || 'Internal server error', { status: 500 });
@@ -68,6 +68,7 @@ export const loader = async ({ context }: LoaderArgs) => {
 
 export default function Images() {
   const { categories, tags, images } = useLoaderData<typeof loader>();
+  console.log(images)
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
