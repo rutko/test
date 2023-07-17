@@ -42,10 +42,10 @@ export async function action({request, context}: ActionArgs) {
     });
 
     const newImages: NewImage[] = await Promise.all(uploadR2Promises);
-    const db = createClient(context.DB as D1Database);
-    const d1Response = await db.insert(images).values(newImages).run()
+    // const db = createClient(context.DB as D1Database);
+    // const d1Response = await db.insert(images).values(newImages).run()
 
-    console.log(d1Response)
+    console.log(newImages)
     return redirect(`/images`);
   } catch (error) {
     console.log(error)
