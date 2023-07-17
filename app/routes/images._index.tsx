@@ -45,7 +45,7 @@ export async function action({request, context}: ActionArgs) {
     const db = createClient(context.DB as D1Database);
     // const d1Response = await db.insert(images).values(newImages).run()
 
-    return json({object: db});
+    return json({object: newImages});
   } catch (error) {
     console.log(error)
     return new Response(error || 'Internal server error', { status: 500 });
