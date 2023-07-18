@@ -42,17 +42,17 @@ export async function action({request, context}: ActionArgs) {
 
     const newImages: NewImage[] = await Promise.all(uploadR2Promises);
 
-    // for (let image of newImages) {
+    for (let image of newImages) {
       // const db = createClient(context.DB as D1Database);
       // const d1Response = await db.insert(images).values(image).run();
 
-    //   const db = (context.DB as D1Database);
-    //   const d1Response = db.prepare(`
-    //   insert into images (key, name, createdAt, updatedAt, category_id,) values (?, ?, ?, ?, ?)
-    // `).bind(image.key, )
+      const db = (context.DB as D1Database);
+      const d1Response = db.prepare(`
+      insert into images (key, name, createdAt, updatedAt, category_id,) values (?, ?, ?, ?, ?)
+    `).bind(image.key, image.name, image.createdAt, image.updatedAt, image.category_id).run()
 
 
-      return json({object: newImages});
+      return json({object: d1Response});
     // }
   } catch (error) {
     console.log(error)
