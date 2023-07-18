@@ -53,7 +53,7 @@ export async function action({request, context}: ActionArgs) {
 
 
       return json({object: d1Response});
-    // }
+    }
   } catch (error) {
     console.log(error)
     return new Response(error || 'Internal server error', { status: 500 });
