@@ -42,9 +42,9 @@ export async function action({request, context}: ActionArgs) {
 
     const newImages: NewImage[] = await Promise.all(uploadR2Promises);
 
-    // for (let image of newImages) {
-      // const db = createClient(context.DB as D1Database);
-      // const d1Response = await db.insert(images).values(image).run();
+    for (let image of newImages) {
+      const db = createClient(context.DB as D1Database);
+      const d1Response = await db.insert(images).values(image).run();
 
     //   const db = (context.DB as D1Database);
     //   const d1Response = db.prepare(`
@@ -52,8 +52,8 @@ export async function action({request, context}: ActionArgs) {
     // `).bind(image.key, )
 
 
-      return json({object: newImages});
-    // }
+      return json({object: d1Response});
+    }
   } catch (error) {
     console.log(error)
     return new Response(error || 'Internal server error', { status: 500 });
