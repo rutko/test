@@ -2,6 +2,6 @@ compatibility_date = "2022-04-05"
 compatibility_flags = ["streams_enable_constructors"]
 
 [[ d1_databases ]]
-binding = "DB" # i.e. available in your Worker on env.DB
+binding = "DB"
 database_name = "aiyasan-db"
 database_id = "d1b280b5-1048-4e2c-ac7e-c4d51b0bc4f9"
