@@ -16,16 +16,21 @@ export const meta: V2_MetaFunction = () => {
 
 type NewCategory = InferModel<typeof categories, 'insert'>;
 export async function action({request, context}: ActionArgs) {
-  const formData = await request.formData();
-  const name = formData.get('name') as string;
-  const newCategory: NewCategory = {
-    name: name,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  }
-  const db = createClient(context.DB as D1Database);
-  const category = await db.insert(categories).values(newCategory).run();
-  return json({object: category});
+  
+  try {
+    const formData = await request.formData();
+    const name = formData.get('name') as string;
+    const newCategory: NewCategory = {
+      name: name,
+      createdAt: new Date(),
+     updatedAt: new Date(),
+    }
+    const db = createClient(context.DB as D1Database);
+    const category = await db.insert(categories).values(newCategory).run();
+    return json({object: category});
+    }  catch (error) {
+      return new Response(error || 'Internal server error', { status: 500 });
+    }
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
