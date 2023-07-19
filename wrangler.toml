@@ -1,7 +1,7 @@
-compatibility_date = "2023-06-24"
+compatibility_date = "2023-07-19"
 compatibility_flags = ["streams_enable_constructors"]
 
 [[ d1_databases ]]
 binding = "DB"
-database_name = "aiyasan-db"
-database_id = "d1b280b5-1048-4e2c-ac7e-c4d51b0bc4f9"
+database_name = "synca1-db"
+database_id = "f3242c80-2541-4eca-87eb-b3e4304e6ebf"
