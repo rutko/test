@@ -1,7 +1,7 @@
 import type { V2_MetaFunction } from "@remix-run/cloudflare";
-import { redirect } from '@remix-run/cloudflare';
+import { redirect, json } from '@remix-run/cloudflare';
 import type { LoaderArgs, ActionArgs } from '@remix-run/cloudflare';
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useActionData } from "@remix-run/react";
 import type { InferModel } from 'drizzle-orm';
 import { createClient } from "~/db/client.server"
 import { categories } from '~/db/schema';
@@ -24,8 +24,8 @@ export async function action({request, context}: ActionArgs) {
     updatedAt: new Date(),
   }
   const db = createClient(context.DB as D1Database);
-  await db.insert(categories).values(newCategory).run();
-  return redirect(`/categories`);
+  const category = await db.insert(categories).values(newCategory).run();
+  return json({object: category});
 }
 
 export const loader = async ({ context }: LoaderArgs) => {
@@ -39,9 +39,12 @@ export const loader = async ({ context }: LoaderArgs) => {
   return { categories: allCategories }
 }
 
+export type Categries = InferModel<typeof categories>;
 export default function Categries() {
   const data = useLoaderData<typeof loader>();
+  const actionData = useActionData<{ object: Categries}>();
   console.log(data)
+  console.log(actionData)
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       <h1>Synca1 Admin</h1>
