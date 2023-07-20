@@ -26,7 +26,7 @@ export async function action({request, context}: ActionArgs) {
      updatedAt: new Date(),
     }
     const db = createClient(context.DB as D1Database);
-    const category = await db.insert(categories).values(newCategory).run();
+    const category = await db.insert(categories).values(newCategory).returning().get();
     return json({object: category});
     }  catch (error) {
       return new Response(error || 'Internal server error', { status: 500 });
