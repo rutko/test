@@ -4,4 +4,4 @@ compatibility_flags = ["streams_enable_constructors"]
 [[ d1_databases ]]
 binding = "DB"
 database_name = "aiyasan-db"
-database_id = "d1b280b5-1048-4e2c-ac7e-c4d51b0bc4f9"
+database_id = "dc03069a-34f8-4651-b647-13a682c7f32c"
